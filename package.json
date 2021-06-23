@@ -1,7 +1,7 @@
 {
   "name": "convenient",
   "version": "1.0.0",
-  "description": "c",
+  "description": "Decorator-driven TypeScript library, wrapping node-convict.",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "files": [
@@ -23,11 +23,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "c"
+    "url": "git+https://github.com/battila7/convenient.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "homepage": "https://github.com/battila7/convenient",
+  "bugs": {
+    "url": "https://github.com/battila7/convenient/issues"
+  },
+  "keywords": [
+    "configuration",
+    "convict",
+    "inversify"
+  ],
+  "author": "Attila Bagossy",
+  "license": "MIT",
   "devDependencies": {
     "@commitlint/cli": "12.1.4",
     "@dwmt/branchlint": "1.0.4",
