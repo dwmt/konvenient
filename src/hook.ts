@@ -1,15 +1,20 @@
 import convict from 'convict'
-import {ConfigurationSchema} from './schema'
+import {ConfigurationSchemaWithDefaults} from './schema'
 
 /**
- *
+ * Hook executed for each configuration class, after Convenient
+ * inspected all configurable fields of the class. Provides an
+ * opportunity for client code to alter the
  */
-export type OnSchemaAssembledHook = (schema: ConfigurationSchema) => void
+export type OnSchemaAssembledHook = (
+	schema: ConfigurationSchemaWithDefaults
+) => void
 
 /**
- *
+ * Hook executed for each configuration class, after the
+ * actual configuration values were loaded with convict.
  */
 export type OnConfigLoadedHook = (
-	schema: ConfigurationSchema,
+	schema: ConfigurationSchemaWithDefaults,
 	config: convict.Config<unknown>
 ) => void

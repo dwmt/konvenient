@@ -5,12 +5,18 @@ import {
 	ConfigurationSchema,
 	configLoadedMarker,
 	ConfigurableSchemaWithValue,
-	ConfigurableSchemaWithDefault
+	ConfigurableSchemaWithDefault,
+	ConfigurationSchemaWithDefaults
 } from './schema'
 import {injectable} from './peer/inversify'
 
 /**
- * Asd
+ * Marks a class as a configuration class. Configuration classes
+ * shall adhere to the following requirements:
+ *
+ *   * have a default or no argument constructor.
+ *
+ * @returns The actual decorator applied to the class.
  */
 export function configuration() {
 	return function (constructor: new () => any) {
@@ -24,9 +30,13 @@ export function configuration() {
 }
 
 /**
+ * Marks a field on a configuration class configurable (loadable with convict). Configurable
+ * fields shall adhere to the following requirements:
  *
- * @param propertySchema
- * @returns
+ *   * have a default value.
+ *
+ * @param propertySchema The convict schema used to load, validate and transform the configuration value.
+ * @returns The actual decorator applied to the field.
  */
 export function configurable<T = any>(propertySchema: ConfigurableSchema<T>) {
 	return function (target: any, propertyKey: string) {
@@ -38,7 +48,7 @@ export function configurable<T = any>(propertySchema: ConfigurableSchema<T>) {
 			enumerable: true,
 			get() {
 				if (!schema[configLoadedMarker]) {
-					loadConfigurationOf(schema)
+					loadConfigurationOf(schema as ConfigurationSchemaWithDefaults)
 
 					schema[configLoadedMarker] = true
 				}
@@ -82,7 +92,7 @@ function extractSchemaFromPrototype(target: any): ConfigurationSchema {
 	return schema
 }
 
-function loadConfigurationOf(schema: ConfigurationSchema) {
+function loadConfigurationOf(schema: ConfigurationSchemaWithDefaults) {
 	const convictSchema = Object.create(null) as SchemaObj
 
 	for (const key of Object.keys(schema)) {

@@ -9,5 +9,5 @@ module.exports = {
 		'@typescript-eslint/no-require-imports': 'off',
 		'@typescript-eslint/no-var-requires': 'off'
 	},
-	ignores: ['_templates']
+	ignores: ['_templates', 'examples']
 }
