@@ -1,0 +1,9 @@
+anyOf:
+# The branch name must exactly match "master"...
+- uses: exactly
+  with:
+    allowed: [master]
+    
+# ...or must contain a Jira ticket identifier followed by a kebab cased
+# ticket title.
+- uses: jira
