@@ -23,7 +23,8 @@
         "noFallthroughCasesInSwitch": false,
         "removeComments": false,
         "preserveConstEnums": true,
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
     },
     "include": [
         "src/**/*.ts"

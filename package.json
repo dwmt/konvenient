@@ -12,7 +12,7 @@
     "compile": "tsc",
     "compile:watch": "tsc --watch",
     "docs": "typedoc --out generated-docs src",
-    "example": "ts-node ./src",
+    "example": "ts-node ./examples/01-simple-usage",
     "lint": "xo",
     "lint:fix": "xo --fix",
     "lint:staged": "lint-staged",
@@ -51,6 +51,15 @@
     "node": ">=16"
   },
   "dependencies": {
-    "convict": "6.1.0"
+    "convict": "6.1.0",
+    "reflect-metadata": "0.1.13"
+  },
+  "peerDependencies": {
+    "inversify": "5.x"
+  },
+  "peerDependenciesMeta": {
+    "inversify": {
+      "optional": true
+    }
   }
 }
