@@ -17,9 +17,9 @@ export const libraryConfiguration: LibraryConfiguration = {
 	}
 }
 
-export class ConvenientConfigurator {
+export class KonvenientConfigurator {
 	/**
-	 * Gets the convict instance used by Convenient.
+	 * Gets the convict instance used by Konvenient.
 	 * @returns the used convict instance
 	 */
 	convict(): convict {
@@ -27,7 +27,7 @@ export class ConvenientConfigurator {
 	}
 
 	/**
-	 * Sets the convict instance to be used by Convenient.
+	 * Sets the convict instance to be used by Konvenient.
 	 * @param value the convict instance to be used
 	 * @returns the configurator
 	 */
@@ -38,7 +38,7 @@ export class ConvenientConfigurator {
 	}
 
 	/**
-	 * Gets the `onSchemaAssembledHook` used by Convenient.
+	 * Gets the `onSchemaAssembledHook` used by Konvenient.
 	 * @returns the used hook
 	 */
 	onSchemaAssembledHook(): OnSchemaAssembledHook {
@@ -46,7 +46,7 @@ export class ConvenientConfigurator {
 	}
 
 	/**
-	 * Sets the `onSchemaAssembledHook` to be used by Convenient.
+	 * Sets the `onSchemaAssembledHook` to be used by Konvenient.
 	 * @param value the hook to be used
 	 * @returns the configurator
 	 */
@@ -58,7 +58,7 @@ export class ConvenientConfigurator {
 
 	/**
 	 * Gets the `onConfigLoadedHook` OnConfigLoadedHook {
-` used by Convenient.
+` used by Konvenient.
 	 * @returns the used hook
 	 */
 	onConfigLoadedHook(): OnConfigLoadedHook {
@@ -66,7 +66,7 @@ export class ConvenientConfigurator {
 	}
 
 	/**
-	 * Sets the `onConfigLoadedHook` to be used by Convenient.
+	 * Sets the `onConfigLoadedHook` to be used by Konvenient.
 	 * @param value the hook to be used
 	 * @returns the configurator
 	 */
@@ -79,6 +79,6 @@ export class ConvenientConfigurator {
 
 /**
  * Configuration object used to set library level options
- * of Convenient.
+ * of Konvenient.
  */
-export const configurator = new ConvenientConfigurator()
+export const configurator = new KonvenientConfigurator()

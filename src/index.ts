@@ -1,4 +1,4 @@
-export {ConvenientConfigurator, configurator} from './configuration'
+export {KonvenientConfigurator, configurator} from './configuration'
 export {configuration, configurable} from './decorator'
 export {OnConfigLoadedHook, OnSchemaAssembledHook} from './hook'
 export {

@@ -2,7 +2,7 @@ import convict from 'convict'
 import {ConfigurationSchemaWithDefaults} from './schema'
 
 /**
- * Hook executed for each configuration class, after Convenient
+ * Hook executed for each configuration class, after Konvenient
  * inspected all configurable fields of the class. Provides an
  * opportunity for client code to alter the
  */

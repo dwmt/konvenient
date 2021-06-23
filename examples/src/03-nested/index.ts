@@ -1,4 +1,4 @@
-import {configuration, configurable} from 'convenient'
+import {configuration, configurable} from 'konvenient'
 
 @configuration()
 class AuthConfiguration {

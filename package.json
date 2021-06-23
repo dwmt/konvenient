@@ -1,5 +1,5 @@
 {
-  "name": "convenient",
+  "name": "konvenient",
   "version": "1.0.0",
   "description": "Decorator-driven TypeScript library, wrapping node-convict.",
   "main": "dist/src/index.js",
@@ -23,11 +23,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/battila7/convenient.git"
+    "url": "git+https://github.com/battila7/konvenient.git"
   },
-  "homepage": "https://github.com/battila7/convenient",
+  "homepage": "https://github.com/battila7/konvenient",
   "bugs": {
-    "url": "https://github.com/battila7/convenient/issues"
+    "url": "https://github.com/battila7/konvenient/issues"
   },
   "keywords": [
     "configuration",
