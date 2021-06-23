@@ -6,6 +6,8 @@ type Inversify = {
 
 export const injectable: ClassDecoratorFactory | null = (function () {
 	try {
+		require('reflect-metadata')
+
 		const inversify = require('inversify') as Inversify
 
 		return inversify.injectable

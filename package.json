@@ -33,7 +33,7 @@
     "@dwmt/branchlint": "1.0.4",
     "@dwmt/commitlint-config-jira-type": "2.0.0",
     "@dwmt/commitlint-plugin-jira-type": "2.0.0",
-    "@types/convict": "^6.0.2",
+    "@types/convict": "6.0.2",
     "@types/jest": "26.0.23",
     "@types/node": "15.12.4",
     "husky": "6.0.0",
@@ -55,7 +55,7 @@
     "reflect-metadata": "0.1.13"
   },
   "peerDependencies": {
-    "inversify": "5.x"
+    "inversify": "^5.1.1"
   },
   "peerDependenciesMeta": {
     "inversify": {

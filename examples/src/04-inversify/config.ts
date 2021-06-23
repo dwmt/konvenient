@@ -1,4 +1,4 @@
-import {configuration, configurable} from '../../src'
+import {configuration, configurable} from 'convenient'
 
 @configuration()
 export class HttpConfiguration {

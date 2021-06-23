@@ -3,4 +3,4 @@ import {HttpServer} from './server'
 
 const server = container.get<HttpServer>(HttpServer)
 
-console.log(server.getPort())
+console.log(server.getPort() + ' ' + server.getStaticFileDirectory())

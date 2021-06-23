@@ -12,4 +12,8 @@ export class HttpServer {
 	getPort() {
 		return this.config.port
 	}
+
+	getStaticFileDirectory() {
+		return this.config.staticFileDirectory
+	}
 }
