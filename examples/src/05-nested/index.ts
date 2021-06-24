@@ -1,4 +1,4 @@
-import {configuration, configurable} from 'konvenient'
+import {configuration, configurable, nested} from 'konvenient'
 
 @configuration()
 class AuthConfiguration {
@@ -8,6 +8,10 @@ class AuthConfiguration {
 		env: 'SUPER_DUPER_SECRET'
 	})
 	secret = 'CHANGEME'
+
+	get secretLongEnough() {
+		return this.secret.length > 3
+	}
 }
 
 @configuration()
@@ -22,9 +26,12 @@ class HttpConfiguration {
 	})
 	port = 8080
 
+	@nested()
     auth = new AuthConfiguration()
 }
 
-const config = new HttpConfiguration()
+const http = new HttpConfiguration()
 
-console.log(`The secret token is: ${config.auth.secret}`)
+console.log(http.port)
+console.log(http.auth.secretLongEnough)
+

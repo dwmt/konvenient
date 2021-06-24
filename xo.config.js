@@ -6,6 +6,7 @@ module.exports = {
 		'import/no-unassigned-import': 'off',
 		'unicorn/prefer-module': 'off',
 		'unicorn/prefer-node-protocol': 'off',
+		'unicorn/no-abusive-eslint-disable': 'off',
 		'@typescript-eslint/no-require-imports': 'off',
 		'@typescript-eslint/no-var-requires': 'off'
 	},

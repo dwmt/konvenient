@@ -22,7 +22,7 @@ class LogConfiguration {
 		format: [LogLevel.Debug, LogLevel.Info, LogLevel.Warn],
 		env: 'LOG_LEVEL'
 	})
-	level?: LogLevel
+	level: LogLevel = LogLevel.Info
 
     get debug() {
         return this.level === LogLevel.Debug

@@ -1,14 +1,18 @@
 import {SchemaObj} from 'convict'
+import cloneDeepWith from 'lodash.clonedeepwith'
 import {libraryConfiguration} from './configuration'
 import {
 	ConfigurableSchema,
 	ConfigurationSchema,
-	configLoadedMarker,
-	ConfigurableSchemaWithValue,
 	ConfigurableSchemaWithDefault,
-	ConfigurationSchemaWithDefaults
+	ConfigurationSchemaWithDefaults,
+	NestedConfigurationSchema,
+	nestedPrototype,
+	nestedSchema,
+	havingValues
 } from './schema'
 import {injectable} from './peer/inversify'
+import {resolveValues, resolveNestedPrototypes} from './resolution'
 
 /**
  * Marks a class as a configuration class. Configuration classes
@@ -47,18 +51,13 @@ export function configurable<T = any>(propertySchema: ConfigurableSchema<T>) {
 		Object.defineProperty(target, propertyKey, {
 			enumerable: true,
 			get() {
-				if (!schema[configLoadedMarker]) {
-					loadConfigurationOf(schema as ConfigurationSchemaWithDefaults)
-
-					schema[configLoadedMarker] = true
-				}
-
-				return (schema[propertyKey] as ConfigurableSchemaWithValue).value
+				return retrieveValue(target, propertyKey)
 			},
 			set(value) {
 				if (
 					!Object.prototype.hasOwnProperty.call(schema[propertyKey], 'default')
 				) {
+					schema[havingValues].add(propertyKey)
 					;(schema[propertyKey] as ConfigurableSchemaWithDefault).default =
 						value
 				}
@@ -67,9 +66,66 @@ export function configurable<T = any>(propertySchema: ConfigurableSchema<T>) {
 	}
 }
 
-const configurationSchema = Symbol('configurationSchema')
+/**
+ * Marks a field on a configuration class as nested configuration. Nested configuration
+ * fields shall adhere to the following requirements:
+ *
+ *   * have a configuration class as their default value.
+ *
+ * @returns The actual decorator applied to the field.
+ */
+export function nested() {
+	return function (target: any, propertyKey: string) {
+		const schema = extractSchemaFromPrototype(target)
 
-const defaultResultTransformer = (value: unknown) => value
+		Object.defineProperty(target, propertyKey, {
+			enumerable: true,
+			get() {
+				return retrieveValue(target, propertyKey)
+			},
+			set(value) {
+				if (!Object.prototype.hasOwnProperty.call(schema, propertyKey)) {
+					schema[havingValues].add(propertyKey)
+
+					schema[propertyKey] = nestedSchemaOf(value)
+				}
+			}
+		})
+	}
+}
+
+const configurationSchema = Symbol('configurationSchema')
+const loadedValues = Symbol('loadedValues')
+
+type LoadedTarget = {
+	[loadedValues]: Record<string, unknown>
+}
+
+function nestedSchemaOf(target: any) {
+	const clonedSchema = cloneDeepWith(
+		extractSchemaFromPrototype(Object.getPrototypeOf(target)),
+		(value) => {
+			if (typeof value === 'function') {
+				return value as unknown
+			}
+
+			return undefined
+		}
+	) as ConfigurationSchema
+
+	return Object.assign(clonedSchema, {
+		[nestedSchema]: true,
+		[nestedPrototype]: Object.getPrototypeOf(target) as unknown
+	}) as NestedConfigurationSchema
+}
+
+function retrieveValue(target: any, key: string): unknown {
+	if (!(loadedValues in target)) {
+		loadConfigurationOf(target)
+	}
+
+	return (target as LoadedTarget)[loadedValues][key]
+}
 
 interface DecoratedPrototype {
 	[configurationSchema]: ConfigurationSchema
@@ -85,6 +141,7 @@ function extractSchemaFromPrototype(target: any): ConfigurationSchema {
 	}
 
 	const schema = Object.create(null) as ConfigurationSchema
+	schema[havingValues] = new Set<string>()
 
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 	target[configurationSchema] = schema
@@ -92,24 +149,30 @@ function extractSchemaFromPrototype(target: any): ConfigurationSchema {
 	return schema
 }
 
-function loadConfigurationOf(schema: ConfigurationSchemaWithDefaults) {
+function loadConfigurationOf(target: any) {
+	const schema = extractSchemaFromPrototype(
+		target
+	) as ConfigurationSchemaWithDefaults
+
+	libraryConfiguration.onSchemaAssembledHook(schema)
+
 	const convictSchema = Object.create(null) as SchemaObj
 
 	for (const key of Object.keys(schema)) {
 		convictSchema[key] = schema[key]
 	}
 
-	libraryConfiguration.onSchemaAssembledHook(schema)
-
 	const config = libraryConfiguration.convict(convictSchema)
 	config.validate({
-		allowed: 'strict'
+		allowed: 'warn'
 	})
 
 	libraryConfiguration.onConfigLoadedHook(schema, config)
 
-	for (const key of Object.keys(schema)) {
-		const transformer = schema[key].result ?? defaultResultTransformer
-		schema[key].value = transformer(config.get(key))
-	}
+	const values = Object.create(null) as Record<string, unknown>
+
+	resolveValues(values, schema, config, '')
+
+	resolveNestedPrototypes(values, schema)
+	;(target as LoadedTarget)[loadedValues] = values
 }

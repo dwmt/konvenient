@@ -1,6 +1,8 @@
 import {PredefinedFormat} from 'convict'
 
-export const configLoadedMarker = Symbol('configLoadedMarker')
+export const nestedSchema = Symbol('nestedSchema')
+export const nestedPrototype = Symbol('nestedPrototype')
+export const havingValues = Symbol('havingValues')
 
 /**
  * Transforms the loaded configurable field value into a new value/type.
@@ -51,11 +53,6 @@ export interface ConfigurableSchema<T = any> {
 	sensitive?: boolean
 
 	/**
-	 * Whether the field is omittable.
-	 */
-	nullable?: boolean
-
-	/**
 	 * An optional transformer function, mapping the loaded value to some new value/type.
 	 */
 	result?: SchemaResult<T>
@@ -80,15 +77,50 @@ export interface ConfigurableSchemaWithDefault extends ConfigurableSchema {
 }
 
 export interface ConfigurationSchema {
-	[key: string]: ConfigurableSchema
-	[configLoadedMarker]: boolean | undefined
+	[key: string]: ConfigurableSchema | NestedConfigurationSchema
+	[havingValues]: Set<string>
+}
+
+export interface NestedConfigurationSchema {
+	[key: string]: ConfigurableSchema | NestedConfigurationSchema
+	[nestedPrototype]: unknown
+	[nestedSchema]: true
 }
 
 /**
  * Metadata attached to the configurable fields of a given configuration class. Each
- * enumerable key represents a configurable field of the original class.
+ * enumerable key represents a configurable field or a nested configuration of the original class.
  */
-export interface ConfigurationSchemaWithDefaults {
-	[key: string]: ConfigurableSchemaWithDefault
-	[configLoadedMarker]: boolean | undefined
+export type ConfigurationSchemaWithDefaults = Record<
+	string,
+	ConfigurableSchemaWithDefault | NestedConfigurationSchemaWithDefaults
+>
+
+/**
+ * Metadata attached to a nested configuration of some configuration class.
+ */
+export interface NestedConfigurationSchemaWithDefaults {
+	[key: string]:
+		| ConfigurableSchemaWithDefault
+		| NestedConfigurationSchemaWithDefaults
+	[nestedPrototype]: unknown
+	[nestedSchema]: true
+}
+
+export function isNestedSchema(
+	schema: any
+): schema is NestedConfigurationSchema {
+	return nestedSchema in schema
+}
+
+export function isNestedSchemaWithDefaults(
+	schema: ConfigurableSchemaWithDefault | NestedConfigurationSchemaWithDefaults
+): schema is NestedConfigurationSchemaWithDefaults {
+	return nestedSchema in schema
+}
+
+export function isConfigurableSchemaWithDefaults(
+	schema: ConfigurableSchemaWithDefault | NestedConfigurationSchemaWithDefaults
+): schema is ConfigurableSchemaWithDefault {
+	return !(nestedSchema in schema)
 }
