@@ -6,8 +6,10 @@
   "scripts": {
     "example:01": "ts-node src/01-simple-usage",
     "example:02": "ts-node src/02-result",
-    "example:03": "ts-node src/03-nested",
-    "example:04": "ts-node src/04-inversify"
+    "example:03": "ts-node src/03-computed",
+    "example:04": "ts-node src/04-env-var-prefix",
+    "example:05": "ts-node src/05-nested",
+    "example:06": "ts-node src/06-inversify"
   },
   "keywords": [],
   "author": "",
