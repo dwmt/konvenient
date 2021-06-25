@@ -9,6 +9,7 @@ import {
 
 export interface LibraryConfiguration {
 	convict: convict
+	sources: string[]
 	fileKeyDerivationStrategy: FileKeyDerivationStrategy
 	envKeyDerivationStrategy: EnvKeyDerivationStrategy
 	onSchemaAssembledHook: OnSchemaAssembledHook
@@ -17,6 +18,7 @@ export interface LibraryConfiguration {
 
 export const libraryConfiguration: LibraryConfiguration = {
 	convict,
+	sources: [],
 	fileKeyDerivationStrategy: defaultFileKeyDerivationStrategy,
 	envKeyDerivationStrategy: defaultEnvKeyDerivationStrategy,
 	onSchemaAssembledHook() {
@@ -34,6 +36,27 @@ export class KonvenientConfigurator {
 	 */
 	convict(): convict {
 		return libraryConfiguration.convict
+	}
+
+	/**
+	 * Sets the convict instance to be used by Konvenient.
+	 * @param value the convict instance to be used
+	 * @returns the configurator
+	 */
+	withConvict(value: convict): this {
+		libraryConfiguration.convict = value
+
+		return this
+	}
+
+	sources(): string[] {
+		return libraryConfiguration.sources
+	}
+
+	withSources(value: string[]): KonvenientConfigurator {
+		libraryConfiguration.sources = value
+
+		return this
 	}
 
 	withFileKeyDerivationStrategy(
@@ -58,17 +81,6 @@ export class KonvenientConfigurator {
 
 	envKeyDerivationStrategy(): EnvKeyDerivationStrategy {
 		return libraryConfiguration.envKeyDerivationStrategy
-	}
-
-	/**
-	 * Sets the convict instance to be used by Konvenient.
-	 * @param value the convict instance to be used
-	 * @returns the configurator
-	 */
-	withConvict(value: convict): this {
-		libraryConfiguration.convict = value
-
-		return this
 	}
 
 	/**

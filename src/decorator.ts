@@ -214,6 +214,8 @@ function loadConfigurationOf(target: any) {
 		})
 	}
 
+	config.loadFile(libraryConfiguration.sources)
+
 	config.validate({
 		allowed: 'warn'
 	})

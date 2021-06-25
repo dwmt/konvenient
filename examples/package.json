@@ -10,16 +10,21 @@
     "example:04": "ts-node src/04-env-var-prefix",
     "example:05": "ts-node src/05-nested",
     "example:06": "ts-node src/06-inversify",
-    "example:07": "ts-node src/07-nested-env-var"
+    "example:07": "ts-node src/07-nested-env-var",
+    "example:08": "ts-node src/08-simple-file",
+    "example:09": "ts-node src/09-yaml-file",
+    "example:10": "ts-node src/10-no-prefix"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "konvenient": "file:../",
-    "inversify": "^5.1.1"
+    "inversify": "^5.1.1",
+    "js-yaml": "4.1.0",
+    "konvenient": "file:../"
   },
   "devDependencies": {
+    "@types/js-yaml": "4.0.1",
     "@types/node": "15.12.4",
     "ts-node": "10.0.0",
     "typedoc": "0.21.0",
