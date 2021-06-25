@@ -1,14 +1,24 @@
 import convict from 'convict'
 import {OnConfigLoadedHook, OnSchemaAssembledHook} from './hook'
+import {
+	defaultEnvKeyDerivationStrategy,
+	defaultFileKeyDerivationStrategy,
+	FileKeyDerivationStrategy,
+	EnvKeyDerivationStrategy
+} from './key-derivation'
 
 export interface LibraryConfiguration {
 	convict: convict
+	fileKeyDerivationStrategy: FileKeyDerivationStrategy
+	envKeyDerivationStrategy: EnvKeyDerivationStrategy
 	onSchemaAssembledHook: OnSchemaAssembledHook
 	onConfigLoadedHook: OnConfigLoadedHook
 }
 
 export const libraryConfiguration: LibraryConfiguration = {
 	convict,
+	fileKeyDerivationStrategy: defaultFileKeyDerivationStrategy,
+	envKeyDerivationStrategy: defaultEnvKeyDerivationStrategy,
 	onSchemaAssembledHook() {
 		// Do nothing.
 	},
@@ -24,6 +34,30 @@ export class KonvenientConfigurator {
 	 */
 	convict(): convict {
 		return libraryConfiguration.convict
+	}
+
+	withFileKeyDerivationStrategy(
+		value: FileKeyDerivationStrategy
+	): KonvenientConfigurator {
+		libraryConfiguration.fileKeyDerivationStrategy = value
+
+		return this
+	}
+
+	fileKeyDerivationStrategy(): FileKeyDerivationStrategy {
+		return libraryConfiguration.fileKeyDerivationStrategy
+	}
+
+	withEnvKeyDerivationStrategy(
+		value: EnvKeyDerivationStrategy
+	): KonvenientConfigurator {
+		libraryConfiguration.envKeyDerivationStrategy = value
+
+		return this
+	}
+
+	envKeyDerivationStrategy(): EnvKeyDerivationStrategy {
+		return libraryConfiguration.envKeyDerivationStrategy
 	}
 
 	/**
@@ -50,15 +84,14 @@ export class KonvenientConfigurator {
 	 * @param value the hook to be used
 	 * @returns the configurator
 	 */
-	withOnSchemaAssemlbedHook(value: OnSchemaAssembledHook): this {
+	withOnSchemaAssembledHook(value: OnSchemaAssembledHook): this {
 		libraryConfiguration.onSchemaAssembledHook = value
 
 		return this
 	}
 
 	/**
-	 * Gets the `onConfigLoadedHook` OnConfigLoadedHook {
-` used by Konvenient.
+	 * Gets the `onConfigLoadedHook` used by Konvenient.
 	 * @returns the used hook
 	 */
 	onConfigLoadedHook(): OnConfigLoadedHook {

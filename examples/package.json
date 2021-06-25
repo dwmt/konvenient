@@ -9,7 +9,8 @@
     "example:03": "ts-node src/03-computed",
     "example:04": "ts-node src/04-env-var-prefix",
     "example:05": "ts-node src/05-nested",
-    "example:06": "ts-node src/06-inversify"
+    "example:06": "ts-node src/06-inversify",
+    "example:07": "ts-node src/07-nested-env-var"
   },
   "keywords": [],
   "author": "",

@@ -8,11 +8,33 @@ import {
 	ConfigurationSchemaWithDefaults,
 	NestedConfigurationSchema,
 	nestedPrototype,
-	nestedSchema,
-	havingValues
+	nestedSchema
 } from './schema'
 import {injectable} from './peer/inversify'
-import {resolveValues, resolveNestedPrototypes} from './resolution'
+import {resolveValues, resolveNestedPrototypes, resolveEnv} from './resolution'
+
+const optionsKey = Symbol('options')
+
+export interface ConfigurationOptions {
+	pathPrefix?: string
+	envPrefix?: string
+}
+
+const defaultConfigurationOptions: ConfigurationOptions = {}
+
+interface FinalizedConfigurationOptions extends Required<ConfigurationOptions> {
+	name: string
+}
+
+interface DecoratedPrototype {
+	[optionsKey]: FinalizedConfigurationOptions
+}
+
+interface DecoratedConstructor {
+	prototype: DecoratedPrototype
+
+	new (): any
+}
 
 /**
  * Marks a class as a configuration class. Configuration classes
@@ -22,11 +44,31 @@ import {resolveValues, resolveNestedPrototypes} from './resolution'
  *
  * @returns The actual decorator applied to the class.
  */
-export function configuration() {
+export function configuration(
+	options: Partial<ConfigurationOptions> = defaultConfigurationOptions
+) {
 	return function (constructor: new () => any) {
-		const wrappedConstructor = injectable
-			? (injectable()(constructor) as new () => any)
-			: constructor
+		const actualOptions = Object.assign(
+			defaultConfigurationOptions,
+			{
+				pathPrefix: libraryConfiguration.fileKeyDerivationStrategy(
+					constructor.name
+				),
+				envPrefix: libraryConfiguration.envKeyDerivationStrategy.deriveKey(
+					constructor.name
+				)
+			},
+			options,
+			{
+				name: constructor.name
+			}
+		) as FinalizedConfigurationOptions
+
+		const wrappedConstructor = (
+			injectable ? (injectable()(constructor) as new () => any) : constructor
+		) as DecoratedConstructor
+
+		wrappedConstructor.prototype[optionsKey] = actualOptions
 
 		// eslint-disable-next-line new-cap, no-new
 		new wrappedConstructor()
@@ -57,7 +99,6 @@ export function configurable<T = any>(propertySchema: ConfigurableSchema<T>) {
 				if (
 					!Object.prototype.hasOwnProperty.call(schema[propertyKey], 'default')
 				) {
-					schema[havingValues].add(propertyKey)
 					;(schema[propertyKey] as ConfigurableSchemaWithDefault).default =
 						value
 				}
@@ -85,8 +126,6 @@ export function nested() {
 			},
 			set(value) {
 				if (!Object.prototype.hasOwnProperty.call(schema, propertyKey)) {
-					schema[havingValues].add(propertyKey)
-
 					schema[propertyKey] = nestedSchemaOf(value)
 				}
 			}
@@ -141,7 +180,6 @@ function extractSchemaFromPrototype(target: any): ConfigurationSchema {
 	}
 
 	const schema = Object.create(null) as ConfigurationSchema
-	schema[havingValues] = new Set<string>()
 
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 	target[configurationSchema] = schema
@@ -154,6 +192,8 @@ function loadConfigurationOf(target: any) {
 		target
 	) as ConfigurationSchemaWithDefaults
 
+	resolveEnv(schema, (target as DecoratedPrototype)[optionsKey].envPrefix)
+
 	libraryConfiguration.onSchemaAssembledHook(schema)
 
 	const convictSchema = Object.create(null) as SchemaObj
@@ -162,7 +202,15 @@ function loadConfigurationOf(target: any) {
 		convictSchema[key] = schema[key]
 	}
 
-	const config = libraryConfiguration.convict(convictSchema)
+	let config
+	if ((target as DecoratedPrototype)[optionsKey].pathPrefix === '') {
+		config = libraryConfiguration.convict(convictSchema)
+	} else {
+		config = libraryConfiguration.convict({
+			[(target as DecoratedPrototype)[optionsKey].pathPrefix]: convictSchema
+		})
+	}
+
 	config.validate({
 		allowed: 'warn'
 	})
@@ -171,7 +219,12 @@ function loadConfigurationOf(target: any) {
 
 	const values = Object.create(null) as Record<string, unknown>
 
-	resolveValues(values, schema, config, '')
+	resolveValues(
+		values,
+		schema,
+		config,
+		(target as DecoratedPrototype)[optionsKey].pathPrefix
+	)
 
 	resolveNestedPrototypes(values, schema)
 	;(target as LoadedTarget)[loadedValues] = values

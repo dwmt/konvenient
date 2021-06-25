@@ -1,7 +1,26 @@
 /* eslint-disable */
+import { libraryConfiguration } from './configuration'
 import {isNestedSchema, nestedPrototype, SchemaResult} from './schema'
 
 const defaultResultTransformer = (value: unknown) => value
+
+export function resolveEnv(schema: any, envPath: any) {
+	for (const key of Object.keys(schema)) {
+		const envKey = envPath === ''
+			? libraryConfiguration.envKeyDerivationStrategy.deriveKey(key)
+			: `${envPath}${libraryConfiguration.envKeyDerivationStrategy.separator}${libraryConfiguration.envKeyDerivationStrategy.deriveKey(key)}`
+
+		if (isNestedSchema(schema[key])) {
+			resolveEnv(schema[key], envKey)
+		} else {
+			if (schema[key].neverLoadFromEnv || schema[key].env) {
+				continue
+			}
+
+			schema[key].env = envKey
+		}
+	}	
+}
 
 export function resolveValues(
 	target: any,
@@ -10,7 +29,9 @@ export function resolveValues(
     path: string
 ) {
 	for (const key of Object.keys(schema)) {
-        const concatPath = path === '' ? key : `${path}.${key}`
+        const concatPath = path === ''
+			? key
+			: `${path}.${key}`
 
 		if (isNestedSchema(schema[key])) {
 			target[key] = Object.create(null)
@@ -22,11 +43,13 @@ export function resolveValues(
                 concatPath
 			)
 		} else {
+			const actualPath = schema[key].path ?? concatPath
+
             let value
-            if (!source.has(concatPath)) {
+            if (!source.has(actualPath)) {
                 value = undefined
             } else {
-                value = source.get(concatPath)
+                value = source.get(actualPath)
             }
 
 			const transformer =

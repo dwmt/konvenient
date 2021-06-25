@@ -17,5 +17,5 @@ export class HttpConfiguration {
 			return value.toLowerCase()
 		}
 	})
-	staticFileDirectory = './static'
+	staticFileDirectory = './STATIC'
 }

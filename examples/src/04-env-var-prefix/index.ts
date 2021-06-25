@@ -1,10 +1,10 @@
-import {configuration, configurable, configurator} from 'konvenient'
+import {configuration, configurable, configurator, isConfigurableSchemaWithDefaults} from 'konvenient'
 
 const PREFIX = 'EXAMPLE'
 
-configurator.withOnSchemaAssemlbedHook(schema => {
+configurator.withOnSchemaAssembledHook(schema => {
     for (const configurableSchema of Object.values(schema)) {
-        if (configurableSchema.env) {
+        if (isConfigurableSchemaWithDefaults(configurableSchema)) {
             configurableSchema.env = `${PREFIX}_${configurableSchema.env}`
         }
     }
