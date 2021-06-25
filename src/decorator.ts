@@ -194,7 +194,10 @@ function loadConfigurationOf(target: any) {
 
 	resolveEnv(schema, (target as DecoratedPrototype)[optionsKey].envPrefix)
 
-	libraryConfiguration.onSchemaAssembledHook(schema)
+	libraryConfiguration.onSchemaAssembledHook(
+		schema,
+		(target as DecoratedPrototype)[optionsKey].name
+	)
 
 	const convictSchema = Object.create(null) as SchemaObj
 
@@ -215,7 +218,11 @@ function loadConfigurationOf(target: any) {
 		allowed: 'warn'
 	})
 
-	libraryConfiguration.onConfigLoadedHook(schema, config)
+	libraryConfiguration.onConfigLoadedHook(
+		schema,
+		config,
+		(target as DecoratedPrototype)[optionsKey].name
+	)
 
 	const values = Object.create(null) as Record<string, unknown>
 

@@ -7,7 +7,8 @@ import {ConfigurationSchemaWithDefaults} from './schema'
  * opportunity for client code to alter the
  */
 export type OnSchemaAssembledHook = (
-	schema: ConfigurationSchemaWithDefaults
+	schema: ConfigurationSchemaWithDefaults,
+	name: string
 ) => void
 
 /**
@@ -16,5 +17,6 @@ export type OnSchemaAssembledHook = (
  */
 export type OnConfigLoadedHook = (
 	schema: ConfigurationSchemaWithDefaults,
-	config: convict.Config<unknown>
+	config: convict.Config<unknown>,
+	name: string
 ) => void
