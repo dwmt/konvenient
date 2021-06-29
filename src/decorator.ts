@@ -217,8 +217,11 @@ function loadConfigurationOf(target: any) {
 	config.loadFile(libraryConfiguration.sources)
 
 	config.validate({
-		allowed: 'warn'
-	})
+		allowed: 'warn',
+		output() {
+			// No-op.
+		}
+	} as any)
 
 	libraryConfiguration.onConfigLoadedHook(
 		schema,

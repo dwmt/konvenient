@@ -1,0 +1,6 @@
+{
+    "port": 6969,
+    "greeting": {
+        "message": "I'm running in production mode!"
+    }
+}
