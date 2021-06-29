@@ -7,7 +7,7 @@
 <h3>
 
 <h3 align="center">
-  TypeScript configuration, as konvenient as possible | Decorator-driven configuration library for TypeScript, based on <a href="https://github.com/mozilla/node-convict">convict</a>.
+  TypeScript configuration, as konvenient as possible. | Decorator-driven configuration library for TypeScript, based on <a href="https://github.com/mozilla/node-convict">convict</a>.
 </h3>
 
 <p align="center">
@@ -22,7 +22,7 @@
   </a>
 </p>
 
-Just install konvenient using your package manager of choice:
+To get started, simply install konvenient using your package manager of choice:
 
 ~~~~
 npm i konvenient
@@ -50,17 +50,17 @@ const config = new HttpConfiguration()
 console.log(config.port)
 ~~~~
 
-For more detailed examples and recipes, please check [examples](examples).
+For more examples and recipes, please head over to [examples](examples#konvenient-examples-and-recipes).
 
 ## Features
 
-  * **Everything from Convict and more** Internally, konvenient wraps [convict](https://github.com/mozilla/node-convict) and exposes all of its functionality: loading configuration from files, command line args, environment variables, format checking (with custom formats), default values and so on!
-  * **Decorator-driven** Konvenient embraces TypeScript classes and turns them into configuration objects via decorators. You can even nest configuration classes in each other!
-  * **Computed Properties** Define functions and getters on configuration classes just as you would do on any other class. Refer to [examples/src/recipes/03-computed](examples/src/recipes/03-computed/index.ts).
-  * **Env Var and File Key Derivation** Environment variable names and file property names are automatically derived from class and property names. Of course, both the derivation method, both the derived values can be overridden.
-  * **Inversify Support** Konvenient comes with [inversify](https://inversify.io/) support baked in: if inversify is available, then konvenient decorates all configuration classes with `@injectable()`.
+  * **Everything from Convict and more.** Internally, konvenient wraps [convict](https://github.com/mozilla/node-convict), and exposes all of its functionality: loading configuration values from files, command line args and environment variables, format checking with support for custom formats, default values and so on!
+  * **Decorator-driven.** Konvenient embraces TypeScript classes and turns them into configuration objects via decorators. You can even nest configuration classes intp each other!
+  * **Computed Properties.** Define functions and getters on configuration classes just as you would do on any other class. For an example, please refer to [examples/src/recipes/03-computed](examples/src/recipes/03-computed/index.ts).
+  * **Env Var and File Key Derivation.** Environment variables and config file keys are automatically derived from class and property names. Of course, both the derivation method and the derived values can be overridden.
+  * **Inversify Support.** Konvenient comes with [inversify](https://inversify.io/) support baked in: if inversify is available, then konvenient decorates all configuration classes with `@injectable()`.
 
 ## License
 
-Licensed under the [MIT](LICENSE).
+Licensed under the [MIT License](LICENSE).
 

@@ -6,7 +6,7 @@ Configuration is best if it's as konvenient as possible. Here you find a few exa
 
 Smaller scale code snippets, showcasing a single feature of the library.
 
-Run any of them with npm from the this directory, for example like `npm run example:01` (pro tip: make sure to `npm install` in this directory as well!).
+Run any of them with npm from the this directory, for example, `npm run example:01` (pro tip: make sure to run `npm install` in this directory as beforehand).
 
   * [01 Simple Usage](src/recipes/01-simple-usage/index.ts)
     * The Quickstart code of the main README. Nothing fancy, just loading a value.
@@ -33,7 +33,7 @@ Run any of them with npm from the this directory, for example like `npm run exam
 
 Somewhat larger modules, exercising multiple parts of konvenient.
 
-Run any of them with npm from the this directory, for example like `npm run recipe:01` (pro tip: make sure to `npm install` in this directory as well!).
+Run any of them with npm from the this directory, for example, `npm run recipe:01` (pro tip: make sure to run `npm install` in this directory as beforehand).
 
   * [01 File Dependent, Single, Top-Level](src/examples/01-file-dependent-single-top-level)
     * Loading configuration values from a file.
