@@ -1,8 +1,8 @@
-import {configuration, configurable} from 'konvenient'
+import {Configuration, Configurable} from 'konvenient'
 
-@configuration()
+@Configuration()
 class HttpConfiguration {
-	@configurable({
+	@Configurable({
 		doc: 'The port on which the server listens.',
 		format: 'port',
 		env: 'PORT'

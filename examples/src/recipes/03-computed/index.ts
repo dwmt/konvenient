@@ -1,4 +1,4 @@
-import {configuration, configurable} from 'konvenient'
+import {Configuration, Configurable} from 'konvenient'
 
 enum LogLevel {
     Debug = 'debug',
@@ -6,9 +6,9 @@ enum LogLevel {
     Warn = 'warn'
 }
 
-@configuration()
+@Configuration()
 class LogConfiguration {
-	@configurable({
+	@Configurable({
 		format: [LogLevel.Debug, LogLevel.Info, LogLevel.Warn],
 		env: 'LOG_LEVEL'
 	})

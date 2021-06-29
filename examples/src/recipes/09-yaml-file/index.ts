@@ -1,13 +1,13 @@
 import yaml from 'js-yaml'
-import {configuration, configurable, configurator, convict} from 'konvenient'
+import {Configuration, Configurable, configurator, convict} from 'konvenient'
 
 convict.addParser({ extension: ['yml', 'yaml'], parse: yaml.load });
 
 configurator.withSources([`${__dirname}/config.yml`])
 
-@configuration()
+@Configuration()
 class HttpConfiguration {
-	@configurable({
+	@Configurable({
 		doc: 'The port on which the server listens.',
 		format: 'port',
 		neverLoadFromEnv: true

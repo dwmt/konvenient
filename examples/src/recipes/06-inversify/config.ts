@@ -1,15 +1,15 @@
-import {configuration, configurable} from 'konvenient'
+import {Configuration, Configurable} from 'konvenient'
 
-@configuration()
+@Configuration()
 export class HttpConfiguration {
-	@configurable({
+	@Configurable({
 		doc: 'The port on which the server listens.',
 		format: 'port',
 		env: 'PORT'
 	})
 	port = 8080
 
-	@configurable<string>({
+	@Configurable<string>({
 		doc: 'The folder from which static files will be served.',
 		format: String,
 		env: 'STATIC_FILE_DIRECTORY',

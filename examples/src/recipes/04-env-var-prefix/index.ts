@@ -1,4 +1,4 @@
-import {configuration, configurable, configurator, isConfigurableSchemaWithDefaults} from 'konvenient'
+import {Configuration, Configurable, configurator, isConfigurableSchemaWithDefaults} from 'konvenient'
 
 const PREFIX = 'EXAMPLE'
 
@@ -16,9 +16,9 @@ enum LogLevel {
     Warn = 'warn'
 }
 
-@configuration()
+@Configuration()
 class LogConfiguration {
-	@configurable({
+	@Configurable({
 		format: [LogLevel.Debug, LogLevel.Info, LogLevel.Warn],
 		env: 'LOG_LEVEL'
 	})

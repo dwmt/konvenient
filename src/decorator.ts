@@ -44,7 +44,7 @@ interface DecoratedConstructor {
  *
  * @returns The actual decorator applied to the class.
  */
-export function configuration(
+export function Configuration(
 	options: Partial<ConfigurationOptions> = defaultConfigurationOptions
 ) {
 	return function (constructor: new () => any) {
@@ -84,7 +84,7 @@ export function configuration(
  * @param propertySchema The convict schema used to load, validate and transform the configuration value.
  * @returns The actual decorator applied to the field.
  */
-export function configurable<T = any>(propertySchema: ConfigurableSchema<T>) {
+export function Configurable<T = any>(propertySchema: ConfigurableSchema<T>) {
 	return function (target: any, propertyKey: string) {
 		const schema = extractSchemaFromPrototype(target)
 
@@ -115,7 +115,7 @@ export function configurable<T = any>(propertySchema: ConfigurableSchema<T>) {
  *
  * @returns The actual decorator applied to the field.
  */
-export function nested() {
+export function Nested() {
 	return function (target: any, propertyKey: string) {
 		const schema = extractSchemaFromPrototype(target)
 

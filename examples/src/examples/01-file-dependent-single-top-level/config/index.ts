@@ -1,4 +1,4 @@
-import {configuration, configurable, configurator, nested} from 'konvenient'
+import {Configuration, Configurable, configurator, Nested} from 'konvenient'
 
 configurator.withSources([`${__dirname}/${process.env['NODE_ENV']}.json`])
 
@@ -7,20 +7,20 @@ export enum Environments {
     Production = 'prod'
 }
 
-@configuration()
+@Configuration()
 export class GreetingConfiguration {
-    @configurable({
+    @Configurable({
         doc: 'The greeting message returned on requests.',
         format: String
     })
     message = 'CHANGEME'
 }
 
-@configuration({
+@Configuration({
     pathPrefix: ''
 })
 export class ApplicationConfiguration {
-    @configurable({
+    @Configurable({
         doc: 'The current environment the application is running in.',
         format: Object.values(Environments),
         env: 'NODE_ENV'
@@ -31,14 +31,14 @@ export class ApplicationConfiguration {
         return this.env == Environments.Production
     }
 
-	@configurable({
+	@Configurable({
 		doc: 'The port on which the server listens.',
 		format: 'port',
 		env: 'PORT'
 	})
 	port = 8080
 
-    @nested()
+    @Nested()
     greeting = new GreetingConfiguration()
 }
 

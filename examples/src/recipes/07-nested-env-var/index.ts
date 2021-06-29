@@ -1,8 +1,8 @@
-import {configuration, configurable, nested} from 'konvenient'
+import {Configuration, Configurable, Nested} from 'konvenient'
 
-@configuration()
+@Configuration()
 class AuthConfiguration {
-    @configurable({
+    @Configurable({
 		doc: 'Super-duper secret token used for authentication.',
 		format: String
 	})
@@ -13,9 +13,9 @@ class AuthConfiguration {
 	}
 }
 
-@configuration()
+@Configuration()
 class HttpConfiguration {
-	@configurable<number>({
+	@Configurable<number>({
 		doc: 'The port on which the server listens.',
 		format: 'port',
         result(value: number) {
@@ -24,7 +24,7 @@ class HttpConfiguration {
 	})
 	port = 8080
 
-	@nested()
+	@Nested()
     auth = new AuthConfiguration()
 }
 

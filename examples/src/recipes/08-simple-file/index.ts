@@ -1,10 +1,10 @@
-import {configuration, configurable, configurator} from 'konvenient'
+import {Configuration, Configurable, configurator} from 'konvenient'
 
 configurator.withSources([`${__dirname}/config.json`])
 
-@configuration()
+@Configuration()
 class HttpConfiguration {
-	@configurable({
+	@Configurable({
 		doc: 'The port on which the server listens.',
 		format: 'port',
 		neverLoadFromEnv: true

@@ -1,4 +1,4 @@
-import {configuration, configurable, configurator} from 'konvenient'
+import {Configuration, Configurable, configurator} from 'konvenient'
 
 configurator.withSources([`${__dirname}/${process.env['NODE_ENV']}.json`])
 
@@ -7,11 +7,11 @@ export enum Environments {
     Production = 'prod'
 }
 
-@configuration({
+@Configuration({
     pathPrefix: ''
 })
 export class GlobalConfiguration {
-    @configurable({
+    @Configurable({
         doc: 'The current environment the application is running in.',
         format: Object.values(Environments),
         env: 'NODE_ENV'
@@ -23,18 +23,18 @@ export class GlobalConfiguration {
     }
 }
 
-@configuration()
+@Configuration()
 export class DatabaseConfiguration {
-    @configurable({
+    @Configurable({
         doc: 'The greeting message returned on requests.',
         format: String
     })
     connectionString = 'mongo://localhost:27017'
 }
 
-@configuration()
+@Configuration()
 export class HttpConfiguration {
-	@configurable({
+	@Configurable({
 		doc: 'The port on which the server listens.',
 		format: 'port',
 		env: 'PORT'
