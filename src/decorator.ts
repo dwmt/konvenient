@@ -1,4 +1,4 @@
-import convict, {SchemaObj} from 'convict'
+import {SchemaObj} from 'convict'
 import cloneDeepWith from 'lodash.clonedeepwith'
 import {libraryConfiguration} from './configuration'
 import {
@@ -237,7 +237,7 @@ function loadConfigurationOf(target: any) {
 	resolveValues(
 		values,
 		schema,
-		config as convict.Config<unknown>,
+		config,
 		(target as DecoratedPrototype)[optionsKey].pathPrefix
 	)
 

@@ -17,6 +17,6 @@ export type OnSchemaAssembledHook = (
  */
 export type OnConfigLoadedHook = (
 	schema: ConfigurationSchemaWithDefaults,
-	config: convict.Config<unknown>,
+	config: convict.Config<any>,
 	name: string
 ) => void
