@@ -78,4 +78,4 @@ jobs:
 
     - name: Build
       run: |
-        pnpm run compile
+        npm run compile
