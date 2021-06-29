@@ -216,6 +216,9 @@ function loadConfigurationOf(target: any) {
 
 	config.loadFile(libraryConfiguration.sources)
 
+	// The type definition of convict does not list the output property,
+	// thus, we had to get creative.
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 	config.validate({
 		allowed: 'warn',
 		output() {
