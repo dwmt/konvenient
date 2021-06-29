@@ -11,6 +11,8 @@ export enum Environments {
     pathPrefix: ''
 })
 export class GlobalConfiguration {
+    // File key: env
+	// Env name: NODE_ENV
     @Configurable({
         doc: 'The current environment the application is running in.',
         format: Object.values(Environments),
@@ -25,6 +27,8 @@ export class GlobalConfiguration {
 
 @Configuration()
 export class DatabaseConfiguration {
+	// File key: database.connectionString
+	// Env name: DATABASE_CONNECTION_STRING
     @Configurable({
         doc: 'The greeting message returned on requests.',
         format: String
@@ -34,6 +38,8 @@ export class DatabaseConfiguration {
 
 @Configuration()
 export class HttpConfiguration {
+    // File key: http.port
+	// Env name: PORT
 	@Configurable({
 		doc: 'The port on which the server listens.',
 		format: 'port',

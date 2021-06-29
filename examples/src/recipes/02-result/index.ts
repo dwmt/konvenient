@@ -2,6 +2,8 @@ import {Configuration, Configurable} from 'konvenient'
 
 @Configuration()
 class HttpConfiguration {
+	// File key: http.port
+	// Env name: PORT
 	@Configurable<number>({
 		doc: 'The port on which the server listens.',
 		format: 'port',

@@ -9,6 +9,9 @@ export enum Environments {
 
 @Configuration()
 export class GreetingConfiguration {
+    // When accessed on ApplicationConfiguration.greeting, then
+    //   File key: greeting.message
+	//   Env name: APPLICATION_GREETING_MESSAGE
     @Configurable({
         doc: 'The greeting message returned on requests.',
         format: String
@@ -20,6 +23,8 @@ export class GreetingConfiguration {
     pathPrefix: ''
 })
 export class ApplicationConfiguration {
+    // File key: env
+	// Env name: NODE_ENV
     @Configurable({
         doc: 'The current environment the application is running in.',
         format: Object.values(Environments),
@@ -31,6 +36,8 @@ export class ApplicationConfiguration {
         return this.env == Environments.Production
     }
 
+    // File key: port
+	// Env name: PORT
 	@Configurable({
 		doc: 'The port on which the server listens.',
 		format: 'port',

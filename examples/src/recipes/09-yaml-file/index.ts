@@ -7,6 +7,8 @@ configurator.withSources([`${__dirname}/config.yml`])
 
 @Configuration()
 class HttpConfiguration {
+	// File key: http.port
+	// Env name: PORT
 	@Configurable({
 		doc: 'The port on which the server listens.',
 		format: 'port',

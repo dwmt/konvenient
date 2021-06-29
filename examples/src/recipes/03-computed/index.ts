@@ -8,6 +8,8 @@ enum LogLevel {
 
 @Configuration()
 class LogConfiguration {
+    // File key: log.level
+	// Env name: LOG_LEVEL
 	@Configurable({
 		format: [LogLevel.Debug, LogLevel.Info, LogLevel.Warn],
 		env: 'LOG_LEVEL'

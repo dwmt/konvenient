@@ -6,6 +6,8 @@ configurator.withSources([`${__dirname}/config.json`])
     pathPrefix: ''
 })
 class HttpConfiguration {
+	// File key: port
+	// Env name: PORT
 	@Configurable({
 		doc: 'The port on which the server listens.',
 		format: 'port',
