@@ -1,7 +1,7 @@
 {
   "name": "konvenient",
-  "version": "1.0.0",
-  "description": "Decorator-driven TypeScript library, wrapping node-convict.",
+  "version": "2.0.0",
+  "description": " Decorator-driven configuration library for TypeScript, based on convict.",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "files": [
@@ -30,6 +30,7 @@
     "url": "https://github.com/battila7/konvenient/issues"
   },
   "keywords": [
+    "typescript",
     "configuration",
     "convict",
     "inversify"
