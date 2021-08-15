@@ -5,7 +5,7 @@ export {Configuration, Configurable, Nested} from './decorator'
 export {OnConfigLoadedHook, OnSchemaAssembledHook} from './hook'
 export {
 	FileKeyDerivationStrategy,
-	EnvKeyDerivationStrategy
+	EnvKeyDerivationStrategy,
 } from './key-derivation'
 export {
 	ConfigurableSchemaWithDefault,
@@ -13,6 +13,6 @@ export {
 	NestedConfigurationSchemaWithDefaults,
 	isNestedSchemaWithDefaults,
 	isConfigurableSchemaWithDefaults,
-	SchemaResult
+	SchemaResult,
 } from './schema'
 export {convict}

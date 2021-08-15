@@ -1,4 +1,4 @@
-import {Configuration, Configurable} from 'konvenient'
+import {Configuration, Configurable} from 'konvenient';
 
 @Configuration()
 export class HttpConfiguration {
@@ -7,9 +7,9 @@ export class HttpConfiguration {
 	@Configurable({
 		doc: 'The port on which the server listens.',
 		format: 'port',
-		env: 'PORT'
+		env: 'PORT',
 	})
-	port = 8080
+	port = 8080;
 
 	// File key: http.staticFileDirectory
 	// Env name: STATIC_FILE_DIRECTORY
@@ -18,8 +18,8 @@ export class HttpConfiguration {
 		format: String,
 		env: 'STATIC_FILE_DIRECTORY',
 		result(value: string) {
-			return value.toLowerCase()
-		}
+			return value.toLowerCase();
+		},
 	})
-	staticFileDirectory = './STATIC'
+	staticFileDirectory = './STATIC';
 }

@@ -55,6 +55,8 @@ export interface ConfigurableSchema<T = any> {
 	 */
 	sensitive?: boolean
 
+	// Nullable?: boolean
+
 	/**
 	 * An optional transformer function, mapping the loaded value to some new value/type.
 	 */
@@ -111,19 +113,19 @@ export interface NestedConfigurationSchemaWithDefaults {
 }
 
 export function isNestedSchema(
-	schema: any
+	schema: any,
 ): schema is NestedConfigurationSchema {
 	return nestedSchema in schema
 }
 
 export function isNestedSchemaWithDefaults(
-	schema: ConfigurableSchemaWithDefault | NestedConfigurationSchemaWithDefaults
+	schema: ConfigurableSchemaWithDefault | NestedConfigurationSchemaWithDefaults,
 ): schema is NestedConfigurationSchemaWithDefaults {
-	return nestedSchema in schema
+	return nestedSchema in schema && 'default' in schema
 }
 
 export function isConfigurableSchemaWithDefaults(
-	schema: ConfigurableSchemaWithDefault | NestedConfigurationSchemaWithDefaults
+	schema: ConfigurableSchemaWithDefault | NestedConfigurationSchemaWithDefaults,
 ): schema is ConfigurableSchemaWithDefault {
 	return !(nestedSchema in schema)
 }

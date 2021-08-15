@@ -1,4 +1,4 @@
-import {SchemaObj} from 'convict'
+import {SchemaObj, ValidateOptions} from 'convict'
 import cloneDeepWith from 'lodash.clonedeepwith'
 import {libraryConfiguration} from './configuration'
 import {
@@ -8,7 +8,7 @@ import {
 	ConfigurationSchemaWithDefaults,
 	NestedConfigurationSchema,
 	nestedPrototype,
-	nestedSchema
+	nestedSchema,
 } from './schema'
 import {injectable} from './peer/inversify'
 import {resolveValues, resolveNestedPrototypes, resolveEnv} from './resolution'
@@ -45,23 +45,23 @@ interface DecoratedConstructor {
  * @returns The actual decorator applied to the class.
  */
 export function Configuration(
-	options: Partial<ConfigurationOptions> = defaultConfigurationOptions
+	options: Partial<ConfigurationOptions> = defaultConfigurationOptions,
 ) {
 	return function (constructor: new () => any) {
 		const actualOptions = Object.assign(
 			defaultConfigurationOptions,
 			{
 				pathPrefix: libraryConfiguration.fileKeyDerivationStrategy(
-					constructor.name
+					constructor.name,
 				),
 				envPrefix: libraryConfiguration.envKeyDerivationStrategy.deriveKey(
-					constructor.name
-				)
+					constructor.name,
+				),
 			},
 			options,
 			{
-				name: constructor.name
-			}
+				name: constructor.name,
+			},
 		) as FinalizedConfigurationOptions
 
 		const wrappedConstructor = (
@@ -102,7 +102,7 @@ export function Configurable<T = any>(propertySchema: ConfigurableSchema<T>) {
 					;(schema[propertyKey] as ConfigurableSchemaWithDefault).default =
 						value
 				}
-			}
+			},
 		})
 	}
 }
@@ -128,7 +128,7 @@ export function Nested() {
 				if (!Object.prototype.hasOwnProperty.call(schema, propertyKey)) {
 					schema[propertyKey] = nestedSchemaOf(value)
 				}
-			}
+			},
 		})
 	}
 }
@@ -149,12 +149,12 @@ function nestedSchemaOf(target: any) {
 			}
 
 			return undefined
-		}
+		},
 	) as ConfigurationSchema
 
 	return Object.assign(clonedSchema, {
 		[nestedSchema]: true,
-		[nestedPrototype]: Object.getPrototypeOf(target) as unknown
+		[nestedPrototype]: Object.getPrototypeOf(target) as unknown,
 	}) as NestedConfigurationSchema
 }
 
@@ -189,14 +189,14 @@ function extractSchemaFromPrototype(target: any): ConfigurationSchema {
 
 function loadConfigurationOf(target: any) {
 	const schema = extractSchemaFromPrototype(
-		target
+		target,
 	) as ConfigurationSchemaWithDefaults
 
 	resolveEnv(schema, (target as DecoratedPrototype)[optionsKey].envPrefix)
 
 	libraryConfiguration.onSchemaAssembledHook(
 		schema,
-		(target as DecoratedPrototype)[optionsKey].name
+		(target as DecoratedPrototype)[optionsKey].name,
 	)
 
 	const convictSchema = Object.create(null) as SchemaObj
@@ -210,7 +210,7 @@ function loadConfigurationOf(target: any) {
 		config = libraryConfiguration.convict(convictSchema)
 	} else {
 		config = libraryConfiguration.convict({
-			[(target as DecoratedPrototype)[optionsKey].pathPrefix]: convictSchema
+			[(target as DecoratedPrototype)[optionsKey].pathPrefix]: convictSchema,
 		})
 	}
 
@@ -218,18 +218,17 @@ function loadConfigurationOf(target: any) {
 
 	// The type definition of convict does not list the output property,
 	// thus, we had to get creative.
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 	config.validate({
 		allowed: 'warn',
 		output() {
 			// No-op.
-		}
-	} as any)
+		},
+	} as ValidateOptions)
 
 	libraryConfiguration.onConfigLoadedHook(
 		schema,
 		config,
-		(target as DecoratedPrototype)[optionsKey].name
+		(target as DecoratedPrototype)[optionsKey].name,
 	)
 
 	const values = Object.create(null) as Record<string, unknown>
@@ -238,7 +237,7 @@ function loadConfigurationOf(target: any) {
 		values,
 		schema,
 		config,
-		(target as DecoratedPrototype)[optionsKey].pathPrefix
+		(target as DecoratedPrototype)[optionsKey].pathPrefix,
 	)
 
 	resolveNestedPrototypes(values, schema)

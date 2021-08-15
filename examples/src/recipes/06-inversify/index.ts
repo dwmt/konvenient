@@ -1,6 +1,6 @@
-import {container} from './inversify.config'
-import {HttpServer} from './server'
+import {container} from './inversify.config';
+import {HttpServer} from './server';
 
-const server = container.get<HttpServer>(HttpServer)
+const server = container.get<HttpServer>(HttpServer);
 
-console.log(server.getPort() + ' ' + server.getStaticFileDirectory())
+console.log(server.getPort() + ' ' + server.getStaticFileDirectory());

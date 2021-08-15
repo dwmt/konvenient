@@ -1,19 +1,19 @@
-import {injectable} from 'inversify'
-import {HttpConfiguration} from './config'
+import {injectable} from 'inversify';
+import {HttpConfiguration} from './config';
 
 @injectable()
 export class HttpServer {
-	private readonly config: HttpConfiguration
+	private readonly config: HttpConfiguration;
 
 	constructor(config: HttpConfiguration) {
-		this.config = config
+		this.config = config;
 	}
 
 	getPort() {
-		return this.config.port
+		return this.config.port;
 	}
 
 	getStaticFileDirectory() {
-		return this.config.staticFileDirectory
+		return this.config.staticFileDirectory;
 	}
 }

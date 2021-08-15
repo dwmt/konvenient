@@ -1,7 +1,7 @@
-import { RouteOptions } from "fastify";
+import {RouteOptions} from 'fastify';
 
-export interface Controller  {
-    routes(): RouteOptions[]
+export interface Controller {
+	routes(): RouteOptions[];
 }
 
-export const TYPE = Symbol('Controller')
+export const TYPE = Symbol('Controller');
