@@ -1,9 +1,9 @@
-import yaml from 'js-yaml'
-import {Configuration, Configurable, configurator, convict} from 'konvenient'
+import yaml from 'js-yaml';
+import {Configuration, Configurable, configurator, convict} from 'konvenient';
 
-convict.addParser({ extension: ['yml', 'yaml'], parse: yaml.load });
+convict.addParser({extension: ['yml', 'yaml'], parse: yaml.load});
 
-configurator.withSources([`${__dirname}/config.yml`])
+configurator.withSources([`${__dirname}/config.yml`]);
 
 @Configuration()
 class HttpConfiguration {
@@ -12,11 +12,11 @@ class HttpConfiguration {
 	@Configurable({
 		doc: 'The port on which the server listens.',
 		format: 'port',
-		neverLoadFromEnv: true
+		neverLoadFromEnv: true,
 	})
-	port = 8080
+	port = 8080;
 }
 
-const config = new HttpConfiguration()
+const config = new HttpConfiguration();
 
-console.log(config.port)
+console.log(config.port);

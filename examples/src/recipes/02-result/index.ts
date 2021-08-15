@@ -1,4 +1,4 @@
-import {Configuration, Configurable} from 'konvenient'
+import {Configuration, Configurable} from 'konvenient';
 
 @Configuration()
 class HttpConfiguration {
@@ -8,13 +8,13 @@ class HttpConfiguration {
 		doc: 'The port on which the server listens.',
 		format: 'port',
 		env: 'PORT',
-        result(value: number) {
-            return value + 1
-        }
+		result(value: number) {
+			return value + 1;
+		},
 	})
-	port = 8080
+	port = 8080;
 }
 
-const config = new HttpConfiguration()
+const config = new HttpConfiguration();
 
-console.log(config.port)
+console.log(config.port);

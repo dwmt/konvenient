@@ -8,7 +8,7 @@ module.exports = {
 		'unicorn/prefer-node-protocol': 'off',
 		'unicorn/no-abusive-eslint-disable': 'off',
 		'@typescript-eslint/no-require-imports': 'off',
-		'@typescript-eslint/no-var-requires': 'off'
+		'@typescript-eslint/no-var-requires': 'off',
 	},
-	ignores: ['_templates', 'examples']
+	ignores: ['_templates', 'examples'],
 }

@@ -4,7 +4,7 @@ import {
 	defaultEnvKeyDerivationStrategy,
 	defaultFileKeyDerivationStrategy,
 	FileKeyDerivationStrategy,
-	EnvKeyDerivationStrategy
+	EnvKeyDerivationStrategy,
 } from './key-derivation'
 
 export interface LibraryConfiguration {
@@ -26,7 +26,7 @@ export const libraryConfiguration: LibraryConfiguration = {
 	},
 	onConfigLoadedHook() {
 		// Do nothing.
-	}
+	},
 }
 
 export class KonvenientConfigurator {
@@ -53,15 +53,13 @@ export class KonvenientConfigurator {
 		return libraryConfiguration.sources
 	}
 
-	withSources(value: string[]): KonvenientConfigurator {
+	withSources(value: string[]): this {
 		libraryConfiguration.sources = value
 
 		return this
 	}
 
-	withFileKeyDerivationStrategy(
-		value: FileKeyDerivationStrategy
-	): KonvenientConfigurator {
+	withFileKeyDerivationStrategy(value: FileKeyDerivationStrategy): this {
 		libraryConfiguration.fileKeyDerivationStrategy = value
 
 		return this
@@ -71,9 +69,7 @@ export class KonvenientConfigurator {
 		return libraryConfiguration.fileKeyDerivationStrategy
 	}
 
-	withEnvKeyDerivationStrategy(
-		value: EnvKeyDerivationStrategy
-	): KonvenientConfigurator {
+	withEnvKeyDerivationStrategy(value: EnvKeyDerivationStrategy): this {
 		libraryConfiguration.envKeyDerivationStrategy = value
 
 		return this

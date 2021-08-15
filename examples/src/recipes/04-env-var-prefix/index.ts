@@ -1,37 +1,42 @@
-import {Configuration, Configurable, configurator, isConfigurableSchemaWithDefaults} from 'konvenient'
+import {
+	Configuration,
+	Configurable,
+	configurator,
+	isConfigurableSchemaWithDefaults,
+} from 'konvenient';
 
-const PREFIX = 'EXAMPLE'
+const PREFIX = 'EXAMPLE';
 
 configurator.withOnSchemaAssembledHook(schema => {
-    for (const configurableSchema of Object.values(schema)) {
-        if (isConfigurableSchemaWithDefaults(configurableSchema)) {
-            configurableSchema.env = `${PREFIX}_${configurableSchema.env}`
-        }
-    }
-})
+	for (const configurableSchema of Object.values(schema)) {
+		if (isConfigurableSchemaWithDefaults(configurableSchema)) {
+			configurableSchema.env = `${PREFIX}_${configurableSchema.env}`;
+		}
+	}
+});
 
 enum LogLevel {
-    Debug = 'debug',
-    Info = 'info',
-    Warn = 'warn'
+	Debug = 'debug',
+	Info = 'info',
+	Warn = 'warn',
 }
 
 @Configuration()
 class LogConfiguration {
-    // File key: log.level
+	// File key: log.level
 	// Env name: EXAMPLE_LOG_LEVEL
 	@Configurable({
 		format: [LogLevel.Debug, LogLevel.Info, LogLevel.Warn],
-		env: 'LOG_LEVEL'
+		env: 'LOG_LEVEL',
 	})
-	level: LogLevel = LogLevel.Info
+	level: LogLevel = LogLevel.Info;
 
-    get debug() {
-        return this.level === LogLevel.Debug
-    }
+	get debug() {
+		return this.level === LogLevel.Debug;
+	}
 }
 
-const config = new LogConfiguration()
+const config = new LogConfiguration();
 
-console.log(config.level)
-console.log(config.debug)
+console.log(config.level);
+console.log(config.debug);
