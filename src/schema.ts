@@ -71,6 +71,17 @@ export interface ConfigurableSchemaWithValue extends ConfigurableSchema {
 }
 
 /**
+ * Metadata attached to a nested configuration of some configuration class.
+ */
+ export interface NestedConfigurationSchemaWithDefaults {
+	[key: string]:
+		| ConfigurableSchemaWithDefault
+		| NestedConfigurationSchemaWithDefaults
+	[nestedPrototype]: unknown
+	[nestedSchema]: true
+}
+
+/**
  * Metadata attached to configurable fields, describing the purpose,
  * format, origin and such of the field value.
  */
@@ -101,16 +112,7 @@ export type ConfigurationSchemaWithDefaults = Record<
 	ConfigurableSchemaWithDefault | NestedConfigurationSchemaWithDefaults
 >
 
-/**
- * Metadata attached to a nested configuration of some configuration class.
- */
-export interface NestedConfigurationSchemaWithDefaults {
-	[key: string]:
-		| ConfigurableSchemaWithDefault
-		| NestedConfigurationSchemaWithDefaults
-	[nestedPrototype]: unknown
-	[nestedSchema]: true
-}
+
 
 export function isNestedSchema(
 	schema: any,
