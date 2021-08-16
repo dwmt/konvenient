@@ -15,6 +15,7 @@ import {resolveValues, resolveNestedPrototypes, resolveEnv} from './resolution'
 
 export const optionsKey = Symbol('options')
 export const configurationSchema = Symbol('configurationSchema')
+export const loadedValues = Symbol('loadedValues')
 
 export interface ConfigurationOptions {
 	pathPrefix?: string
@@ -33,10 +34,13 @@ export interface DecoratedPrototype {
 	[configurationSchema]: ConfigurationSchema
 }
 
-interface DecoratedConstructor {
+export interface DecoratedConstructor {
 	prototype: DecoratedPrototype
-
 	new (): any
+}
+
+export type LoadedTarget = {
+	[loadedValues]: Record<string, unknown>
 }
 
 /**
@@ -136,12 +140,6 @@ export function Nested() {
 	}
 }
 
-const loadedValues = Symbol('loadedValues')
-
-type LoadedTarget = {
-	[loadedValues]: Record<string, unknown>
-}
-
 function nestedSchemaOf(target: any) {
 	const clonedSchema = cloneDeepWith(
 		extractSchemaFromPrototype(Object.getPrototypeOf(target)),
@@ -174,7 +172,7 @@ export function isDecoratedPrototype(
 	return Object.prototype.hasOwnProperty.call(target, configurationSchema)
 }
 
-function extractSchemaFromPrototype(target: any): ConfigurationSchema {
+export function extractSchemaFromPrototype(target: any): ConfigurationSchema {
 	if (isDecoratedPrototype(target)) {
 		return target[configurationSchema]
 	}

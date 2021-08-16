@@ -24,7 +24,7 @@ export function defaultFileKeyDerivationStrategy(name: string): string {
 	)}`
 }
 
-function removeConfiguration(name: string): string {
+export function removeConfiguration(name: string): string {
 	if (name.endsWith('Configuration')) {
 		return name.split('Configuration')[0]
 	}

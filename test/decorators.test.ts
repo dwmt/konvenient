@@ -5,6 +5,7 @@ import {
 	ConfigurationOptions,
 	configurationSchema,
 	DecoratedPrototype,
+	extractSchemaFromPrototype,
 	FinalizedConfigurationOptions,
 	isDecoratedPrototype,
 	optionsKey,
@@ -147,6 +148,34 @@ describe('Configurable: Property Decorator', () => {
 			...existingSchema,
 			dc: schema,
 		})
+	})
+})
+
+describe('extractSchemaFromPrototype', () => {
+	it('extracts schema from a class', () => {
+		const schema = {
+			foo: {
+				env: 'FOO',
+				doc: 'Foo',
+				format: String,
+			},
+			bar: {
+				env: 'BAR',
+				doc: 'Bar',
+				format: String,
+			},
+		}
+
+		const target = Object.create(null) as DecoratedPrototype
+		target[configurationSchema] = schema
+
+		expect(extractSchemaFromPrototype(target)).toEqual(schema)
+	})
+
+	it('creates schema if it doesnot exist', () => {
+		const target = Object.create(null) as DecoratedPrototype
+		const schema: ConfigurationSchema = {}
+		expect(extractSchemaFromPrototype(target)).toEqual(schema)
 	})
 })
 
