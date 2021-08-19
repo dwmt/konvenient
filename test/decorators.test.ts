@@ -138,7 +138,7 @@ describe('Configurable: Property Decorator', () => {
 		const target = Object.create(null) as DecoratedPrototype
 		target[optionsKey] = options
 		target[configurationSchema] = existingSchema
-		
+
 		// When
 		const decorator = configurable(schema)
 		decorator(target, 'dc')
