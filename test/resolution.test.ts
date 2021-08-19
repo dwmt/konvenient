@@ -8,8 +8,8 @@ describe('resolveEnv', () => {
 		const schema: ConfigurationSchema = {
 			foo: {
 				doc: 'Foo',
-				format: String
-			}
+				format: String,
+			},
 		}
 
 		// When
@@ -25,8 +25,8 @@ describe('resolveEnv', () => {
 			foo: {
 				doc: 'Foo',
 				env: 'FOO',
-				format: String
-			}
+				format: String,
+			},
 		}
 
 		// When
@@ -42,8 +42,8 @@ describe('resolveEnv', () => {
 			foo: {
 				doc: 'Foo',
 				neverLoadFromEnv: true,
-				format: String
-			}
+				format: String,
+			},
 		}
 
 		// When

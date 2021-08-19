@@ -1,7 +1,7 @@
 import {describe, it, expect} from '@jest/globals'
 import {
 	removeConfiguration,
-	defaultFileKeyDerivationStrategy
+	defaultFileKeyDerivationStrategy,
 } from '../src/key-derivation'
 
 describe('removeConfiguration', () => {
@@ -11,7 +11,7 @@ describe('removeConfiguration', () => {
 		expect(removeConfiguration('Bestconfig')).toEqual('Bestconfig')
 		expect(removeConfiguration('LamentConfiguration')).toEqual('Lament')
 		expect(removeConfiguration('Lamentconfiguration')).toEqual(
-			'Lamentconfiguration'
+			'Lamentconfiguration',
 		)
 	})
 })
@@ -22,10 +22,10 @@ describe('defaultFileKeyDerivationStrategy', () => {
 		expect(defaultFileKeyDerivationStrategy('BestConfig')).toEqual('best')
 		expect(defaultFileKeyDerivationStrategy('Bestconfig')).toEqual('bestconfig')
 		expect(defaultFileKeyDerivationStrategy('LamentConfiguration')).toEqual(
-			'lament'
+			'lament',
 		)
 		expect(defaultFileKeyDerivationStrategy('Lamentconfiguration')).toEqual(
-			'lamentconfiguration'
+			'lamentconfiguration',
 		)
 	})
 })
