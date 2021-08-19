@@ -49,6 +49,7 @@ export function Configuration(
 ) {
 	return function (constructor: new () => any) {
 		const actualOptions = Object.assign(
+			{},
 			defaultConfigurationOptions,
 			{
 				pathPrefix: libraryConfiguration.fileKeyDerivationStrategy(
