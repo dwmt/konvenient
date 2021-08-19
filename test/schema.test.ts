@@ -10,15 +10,18 @@ import {
 
 describe('isNestedSchema', () => {
 	it('returns true if it has NestedSchema', () => {
+		// Given
 		const target: NestedConfigurationSchema = Object.create(
 			null
 		) as NestedConfigurationSchema
 		target[nestedSchema] = true
 
+		// Expect
 		expect(isNestedSchema(target)).toBe(true)
 	})
 
 	it('returns false if it does not have NestedSchema', () => {
+		// Given
 		const target = Object.create(null) as DecoratedPrototype
 
 		const schema: ConfigurableSchema = {
@@ -27,21 +30,25 @@ describe('isNestedSchema', () => {
 
 		target[configurationSchema] = schema
 
+		// Expect
 		expect(isNestedSchema(target)).toBe(false)
 	})
 })
 
 describe('isNestedSchemaWithDefauts', () => {
 	it('returns true if it has nestedSchema and default', () => {
+		// Given
 		const target: NestedConfigurationSchemaWithDefaults = Object.create(
 			null
 		) as NestedConfigurationSchemaWithDefaults
 		target[nestedSchema] = true
 
+		// Expect
 		expect(isNestedSchema(target)).toBe(true)
 	})
 
 	it('returns false if it does not have NestedSchema', () => {
+		// Given
 		const target = Object.create(null) as DecoratedPrototype
 		const schema: ConfigurableSchema = {
 			foo: 'bar'
@@ -49,6 +56,7 @@ describe('isNestedSchemaWithDefauts', () => {
 
 		target[configurationSchema] = schema
 
+		// Expect
 		expect(isNestedSchema(target)).toBe(false)
 	})
 })

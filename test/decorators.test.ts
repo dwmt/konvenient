@@ -14,16 +14,15 @@ import {ConfigurationSchema} from '../src/schema'
 
 describe('Configuration: class decorator', () => {
 	it('decorates a class with no options', () => {
-		// Given:
-		// eslint-disable-next-line  @typescript-eslint/no-extraneous-class
+		// Given
 		const TestConfig = class TestConfig {}
 		const decorator = configuration({} as ConfigurationOptions)
 
-		// When:
+		// When
 		decorator(TestConfig)
 		const instance = new TestConfig()
 
-		// Then:
+		// Then
 		expect((instance as DecoratedPrototype)[optionsKey]).toEqual({
 			pathPrefix: 'test',
 			envPrefix: 'TEST',
@@ -32,18 +31,17 @@ describe('Configuration: class decorator', () => {
 	})
 
 	it('decorates a class with an env prefix', () => {
-		// Given:
+		// Given
 		const decorator = configuration({
 			envPrefix: 'FOO'
 		})
-		// eslint-disable-next-line  @typescript-eslint/no-extraneous-class
 		const TestConfig = class TestConfig {}
 
-		// When:
+		// When
 		decorator(TestConfig)
 		const instance = new TestConfig()
 
-		// Then:
+		// Then
 		expect((instance as DecoratedPrototype)[optionsKey]).toEqual({
 			name: 'TestConfig',
 			envPrefix: 'FOO',
@@ -52,16 +50,15 @@ describe('Configuration: class decorator', () => {
 	})
 
 	it('decorates a class with a path prefix', () => {
-		// Given:
-		// eslint-disable-next-line  @typescript-eslint/no-extraneous-class
+		// Given
 		const TestConfig = class TestConfig {}
 		const decorator = configuration({pathPrefix: 'foo'})
 
-		// When:
+		// When
 		decorator(TestConfig)
 		const instance = new TestConfig()
 
-		// Then:
+		// Then
 		expect((instance as DecoratedPrototype)[optionsKey]).toEqual({
 			name: 'TestConfig',
 			envPrefix: 'TEST',
@@ -72,7 +69,6 @@ describe('Configuration: class decorator', () => {
 	it('decorates a class with env and path prefixes', () => {
 		// Given
 		const decorator = configuration({pathPrefix: 'meh', envPrefix: 'AHEM'})
-		// eslint-disable-next-line  @typescript-eslint/no-extraneous-class
 		const TestConfig = class TestConfig {}
 
 		// When
@@ -90,6 +86,7 @@ describe('Configuration: class decorator', () => {
 
 describe('Configurable: Property Decorator', () => {
 	it('decorates a  property', () => {
+		// Given
 		const schema = {
 			format: String,
 			doc: 'Favourite mario kart character',
@@ -106,16 +103,18 @@ describe('Configurable: Property Decorator', () => {
 			[optionsKey]: options
 		}) as DecoratedPrototype
 
+		// When
 		const decorator = configurable(schema)
-
 		decorator(target, 'property')
 
+		// Then
 		expect(target[configurationSchema]).toEqual({
 			property: schema
 		})
 	})
 
 	it('adds a new property on an existing object', () => {
+		// Given
 		const options = {
 			name: 'TestConfig',
 			envPrefix: 'TEST',
@@ -139,11 +138,12 @@ describe('Configurable: Property Decorator', () => {
 		const target = Object.create(null) as DecoratedPrototype
 		target[optionsKey] = options
 		target[configurationSchema] = existingSchema
-
+		
+		// When
 		const decorator = configurable(schema)
-
 		decorator(target, 'dc')
 
+		// Then
 		expect(target[configurationSchema]).toEqual({
 			...existingSchema,
 			dc: schema
@@ -153,6 +153,7 @@ describe('Configurable: Property Decorator', () => {
 
 describe('extractSchemaFromPrototype', () => {
 	it('extracts schema from a class', () => {
+		// Given
 		const schema = {
 			foo: {
 				env: 'FOO',
@@ -169,23 +170,31 @@ describe('extractSchemaFromPrototype', () => {
 		const target = Object.create(null) as DecoratedPrototype
 		target[configurationSchema] = schema
 
+		// Expect
 		expect(extractSchemaFromPrototype(target)).toEqual(schema)
 	})
 
-	it('creates schema if it doesnot exist', () => {
+	it('creates schema if it does not exist', () => {
+		// Given
 		const target = Object.create(null) as DecoratedPrototype
 		const schema: ConfigurationSchema = {}
+
+		// Expect
 		expect(extractSchemaFromPrototype(target)).toEqual(schema)
 	})
 })
 
 describe('isDecoratedPrototype', () => {
 	it('returns false for a regular object', () => {
+		// Given
 		const target = Object.create(null) as DecoratedPrototype
+
+		// Expect
 		expect(isDecoratedPrototype(target)).toBe(false)
 	})
 
 	it('returns true for an object containing [configurationSchema]', () => {
+		// Given
 		const target = Object.create(null) as DecoratedPrototype
 		const schema: ConfigurationSchema = {
 			foo: {
@@ -196,6 +205,7 @@ describe('isDecoratedPrototype', () => {
 
 		target[configurationSchema] = schema
 
+		// Expect
 		expect(isDecoratedPrototype(target)).toBe(true)
 	})
 })

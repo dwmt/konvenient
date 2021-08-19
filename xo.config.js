@@ -10,5 +10,13 @@ module.exports = {
 		'@typescript-eslint/no-require-imports': 'off',
 		'@typescript-eslint/no-var-requires': 'off'
 	},
-	ignores: ['_templates', 'examples']
+	ignores: ['_templates', 'examples'],
+	overrides: [
+		{
+			files: 'test/**/*.test.ts',
+			rules: {
+				'@typescript-eslint/no-extraneous-class': 'off'
+			}
+		}
+	]
 }
