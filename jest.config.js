@@ -7,5 +7,5 @@ module.exports = {
 
 	testRegex: '/test/.*\\.test\\.(ts|tsx)$',
 
-	reporters: ['default', 'jest-junit'],
+	reporters: ['default', 'jest-junit']
 }

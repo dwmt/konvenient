@@ -4,7 +4,7 @@ import {
 	defaultEnvKeyDerivationStrategy,
 	defaultFileKeyDerivationStrategy,
 	FileKeyDerivationStrategy,
-	EnvKeyDerivationStrategy,
+	EnvKeyDerivationStrategy
 } from './key-derivation'
 
 export interface LibraryConfiguration {
@@ -26,7 +26,7 @@ export const libraryConfiguration: LibraryConfiguration = {
 	},
 	onConfigLoadedHook() {
 		// Do nothing.
-	},
+	}
 }
 
 export class KonvenientConfigurator {

@@ -8,7 +8,7 @@ import {
 	extractSchemaFromPrototype,
 	FinalizedConfigurationOptions,
 	isDecoratedPrototype,
-	optionsKey,
+	optionsKey
 } from '../src/decorator'
 import {ConfigurationSchema} from '../src/schema'
 
@@ -27,14 +27,14 @@ describe('Configuration: class decorator', () => {
 		expect((instance as DecoratedPrototype)[optionsKey]).toEqual({
 			pathPrefix: 'test',
 			envPrefix: 'TEST',
-			name: 'TestConfig',
+			name: 'TestConfig'
 		})
 	})
 
 	it('decorates a class with an env prefix', () => {
 		// Given:
 		const decorator = configuration({
-			envPrefix: 'FOO',
+			envPrefix: 'FOO'
 		})
 		// eslint-disable-next-line  @typescript-eslint/no-extraneous-class
 		const TestConfig = class TestConfig {}
@@ -47,7 +47,7 @@ describe('Configuration: class decorator', () => {
 		expect((instance as DecoratedPrototype)[optionsKey]).toEqual({
 			name: 'TestConfig',
 			envPrefix: 'FOO',
-			pathPrefix: 'test',
+			pathPrefix: 'test'
 		})
 	})
 
@@ -65,7 +65,7 @@ describe('Configuration: class decorator', () => {
 		expect((instance as DecoratedPrototype)[optionsKey]).toEqual({
 			name: 'TestConfig',
 			envPrefix: 'TEST',
-			pathPrefix: 'foo',
+			pathPrefix: 'foo'
 		})
 	})
 
@@ -83,7 +83,7 @@ describe('Configuration: class decorator', () => {
 		expect((instance as DecoratedPrototype)[optionsKey]).toEqual({
 			name: 'TestConfig',
 			envPrefix: 'AHEM',
-			pathPrefix: 'meh',
+			pathPrefix: 'meh'
 		})
 	})
 })
@@ -93,17 +93,17 @@ describe('Configurable: Property Decorator', () => {
 		const schema = {
 			format: String,
 			doc: 'Favourite mario kart character',
-			env: 'FAVOURITE_CHARACTER',
+			env: 'FAVOURITE_CHARACTER'
 		}
 
 		const options: FinalizedConfigurationOptions = {
 			name: 'TestConfig',
 			envPrefix: 'TEST',
-			pathPrefix: 'test',
+			pathPrefix: 'test'
 		}
 
 		const target = Object.create({
-			[optionsKey]: options,
+			[optionsKey]: options
 		}) as DecoratedPrototype
 
 		const decorator = configurable(schema)
@@ -111,7 +111,7 @@ describe('Configurable: Property Decorator', () => {
 		decorator(target, 'property')
 
 		expect(target[configurationSchema]).toEqual({
-			property: schema,
+			property: schema
 		})
 	})
 
@@ -119,21 +119,21 @@ describe('Configurable: Property Decorator', () => {
 		const options = {
 			name: 'TestConfig',
 			envPrefix: 'TEST',
-			pathPrefix: 'test',
+			pathPrefix: 'test'
 		}
 
 		const existingSchema = {
 			marvel: {
 				format: String,
 				doc: 'Favourite mario kart character',
-				env: 'FAVOURITE_MARVEL_CHARACTER',
-			},
+				env: 'FAVOURITE_MARVEL_CHARACTER'
+			}
 		}
 
 		const schema = {
 			doc: 'Favorite DC comics character',
 			env: 'FAVOURITE_DC_CHARACTER',
-			format: String,
+			format: String
 		}
 
 		const target = Object.create(null) as DecoratedPrototype
@@ -146,7 +146,7 @@ describe('Configurable: Property Decorator', () => {
 
 		expect(target[configurationSchema]).toEqual({
 			...existingSchema,
-			dc: schema,
+			dc: schema
 		})
 	})
 })
@@ -157,13 +157,13 @@ describe('extractSchemaFromPrototype', () => {
 			foo: {
 				env: 'FOO',
 				doc: 'Foo',
-				format: String,
+				format: String
 			},
 			bar: {
 				env: 'BAR',
 				doc: 'Bar',
-				format: String,
-			},
+				format: String
+			}
 		}
 
 		const target = Object.create(null) as DecoratedPrototype
@@ -190,8 +190,8 @@ describe('isDecoratedPrototype', () => {
 		const schema: ConfigurationSchema = {
 			foo: {
 				env: 'FOO',
-				format: String,
-			},
+				format: String
+			}
 		}
 
 		target[configurationSchema] = schema

@@ -5,13 +5,13 @@ import {
 	isNestedSchema,
 	NestedConfigurationSchema,
 	NestedConfigurationSchemaWithDefaults,
-	nestedSchema,
+	nestedSchema
 } from '../src/schema'
 
 describe('isNestedSchema', () => {
 	it('returns true if it has NestedSchema', () => {
 		const target: NestedConfigurationSchema = Object.create(
-			null,
+			null
 		) as NestedConfigurationSchema
 		target[nestedSchema] = true
 
@@ -22,7 +22,7 @@ describe('isNestedSchema', () => {
 		const target = Object.create(null) as DecoratedPrototype
 
 		const schema: ConfigurableSchema = {
-			foo: 'bar',
+			foo: 'bar'
 		}
 
 		target[configurationSchema] = schema
@@ -34,7 +34,7 @@ describe('isNestedSchema', () => {
 describe('isNestedSchemaWithDefauts', () => {
 	it('returns true if it has nestedSchema and default', () => {
 		const target: NestedConfigurationSchemaWithDefaults = Object.create(
-			null,
+			null
 		) as NestedConfigurationSchemaWithDefaults
 		target[nestedSchema] = true
 
@@ -44,7 +44,7 @@ describe('isNestedSchemaWithDefauts', () => {
 	it('returns false if it does not have NestedSchema', () => {
 		const target = Object.create(null) as DecoratedPrototype
 		const schema: ConfigurableSchema = {
-			foo: 'bar',
+			foo: 'bar'
 		}
 
 		target[configurationSchema] = schema

@@ -13,14 +13,14 @@ export const defaultEnvKeyDerivationStrategy: EnvKeyDerivationStrategy = {
 		const nameWithoutConfig = removeConfiguration(name)
 
 		return snakeCase(nameWithoutConfig).toUpperCase()
-	},
+	}
 }
 
 export function defaultFileKeyDerivationStrategy(name: string): string {
 	const nameWithoutConfig = removeConfiguration(name)
 
 	return `${nameWithoutConfig.charAt(0).toLowerCase()}${nameWithoutConfig.slice(
-		1,
+		1
 	)}`
 }
 
