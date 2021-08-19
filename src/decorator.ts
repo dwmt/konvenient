@@ -13,7 +13,9 @@ import {
 import {injectable} from './peer/inversify'
 import {resolveValues, resolveNestedPrototypes, resolveEnv} from './resolution'
 
-const optionsKey = Symbol('options')
+export const optionsKey = Symbol('options')
+export const configurationSchema = Symbol('configurationSchema')
+export const loadedValues = Symbol('loadedValues')
 
 export interface ConfigurationOptions {
 	pathPrefix?: string
@@ -22,18 +24,23 @@ export interface ConfigurationOptions {
 
 const defaultConfigurationOptions: ConfigurationOptions = {}
 
-interface FinalizedConfigurationOptions extends Required<ConfigurationOptions> {
+export interface FinalizedConfigurationOptions
+	extends Required<ConfigurationOptions> {
 	name: string
 }
 
-interface DecoratedPrototype {
+export interface DecoratedPrototype {
 	[optionsKey]: FinalizedConfigurationOptions
+	[configurationSchema]: ConfigurationSchema
 }
 
-interface DecoratedConstructor {
+export interface DecoratedConstructor {
 	prototype: DecoratedPrototype
-
 	new (): any
+}
+
+export type LoadedTarget = {
+	[loadedValues]: Record<string, unknown>
 }
 
 /**
@@ -156,13 +163,6 @@ export function Nested() {
 	}
 }
 
-const configurationSchema = Symbol('configurationSchema')
-const loadedValues = Symbol('loadedValues')
-
-type LoadedTarget = {
-	[loadedValues]: Record<string, unknown>
-}
-
 function nestedSchemaOf(target: any) {
 	const clonedSchema = cloneDeepWith(
 		extractSchemaFromPrototype(Object.getPrototypeOf(target)),
@@ -189,15 +189,13 @@ function retrieveValue(target: any, key: string): unknown {
 	return (target as LoadedTarget)[loadedValues][key]
 }
 
-interface DecoratedPrototype {
-	[configurationSchema]: ConfigurationSchema
-}
-
-function isDecoratedPrototype(target: any): target is DecoratedPrototype {
+export function isDecoratedPrototype(
+	target: any,
+): target is DecoratedPrototype {
 	return Object.prototype.hasOwnProperty.call(target, configurationSchema)
 }
 
-function extractSchemaFromPrototype(target: any): ConfigurationSchema {
+export function extractSchemaFromPrototype(target: any): ConfigurationSchema {
 	if (isDecoratedPrototype(target)) {
 		return target[configurationSchema]
 	}
