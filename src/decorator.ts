@@ -70,6 +70,28 @@ export function Configuration(
 
 		wrappedConstructor.prototype[optionsKey] = actualOptions
 
+		const parent = Object.getPrototypeOf(wrappedConstructor.prototype)
+		const parentSchema = extractSchemaFromPrototype(parent)
+		const currentSchema = extractSchemaFromPrototype(wrappedConstructor.prototype)
+		for (const propertyKey of Object.keys(parentSchema)) {
+			currentSchema[propertyKey] = cloneDeepWith(parentSchema[propertyKey])
+
+			Object.defineProperty(wrappedConstructor.prototype, propertyKey, {
+				enumerable: true,
+				get() {
+					return retrieveValue(wrappedConstructor.prototype, propertyKey)
+				},
+				set(value) {
+					if (
+						!Object.prototype.hasOwnProperty.call(currentSchema[propertyKey], 'default')
+					) {
+						;(currentSchema[propertyKey] as ConfigurableSchemaWithDefault).default =
+							value
+					}
+				},
+			})
+		}
+
 		// eslint-disable-next-line new-cap, no-new
 		new wrappedConstructor()
 	}
@@ -159,7 +181,7 @@ function nestedSchemaOf(target: any) {
 }
 
 function retrieveValue(target: any, key: string): unknown {
-	if (!(loadedValues in target)) {
+	if (!Object.prototype.hasOwnProperty.call(target, loadedValues)) {
 		loadConfigurationOf(target)
 	}
 
