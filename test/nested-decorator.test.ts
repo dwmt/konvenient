@@ -6,9 +6,15 @@ import {
 	LoadedTarget,
 	loadedValues,
 	Nested as nested,
+	nestedSchemaOf,
 	optionsKey,
 } from '../src/decorator'
-import {nestedPrototype, nestedSchema} from '../src/schema'
+import {
+	ConfigurableSchema,
+	NestedConfigurationSchema,
+	nestedPrototype,
+	nestedSchema,
+} from '../src/schema'
 
 @configuration()
 export class FooConfig {
@@ -62,5 +68,42 @@ describe('Nested Configuration: property decorator for a Configuration type', ()
 				[nestedPrototype]: expectedPrototype,
 			},
 		})
+	})
+})
+
+describe('nestedSchemaOf', () => {
+	it('creates the nestedSchema for a configuration instance', () => {
+		const storesSchema: ConfigurableSchema = {
+			mongodbUrl: {
+				env: 'MONGODB_CONNECTION_URL',
+				doc: 'Mongodb connection url',
+				default: 'mongodb://localhost:27017/reddit-data',
+				format: String,
+			},
+			redisUrl: {
+				env: 'REDIS_CONNECTION_URL',
+				doc: 'Redis connection url',
+				default: 'redis://localhost:6379',
+				format: String,
+			},
+		}
+
+		const proto: DecoratedPrototype = {
+			[optionsKey]: {
+				name: 'StoreConfig',
+				pathPrefix: './store',
+				envPrefix: 'STORE',
+			},
+			[configurationSchema]: storesSchema,
+		}
+
+		const target: NestedConfigurationSchema = Object.create(proto)
+		const expected: NestedConfigurationSchema = {
+			...proto[configurationSchema],
+			[nestedSchema]: true,
+			[nestedPrototype]: proto,
+		}
+
+		expect(nestedSchemaOf(target)).toEqual(expected)
 	})
 })
