@@ -97,6 +97,7 @@ describe('nestedSchemaOf', () => {
 			[configurationSchema]: storesSchema,
 		}
 
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		const target: NestedConfigurationSchema = Object.create(proto)
 		const expected: NestedConfigurationSchema = {
 			...proto[configurationSchema],
