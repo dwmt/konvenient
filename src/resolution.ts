@@ -1,14 +1,10 @@
 /* eslint-disable */
-import { Config } from "convict";
 import { libraryConfiguration } from "./configuration";
 import {
-  ConfigurableSchemaWithDefault,
   ConfigurationSchema,
-  ConfigurationSchemaWithDefaults,
-  NestedConfigurationSchemaWithDefaults,
-  isNestedSchema,
+  ConfigurationSchemaWithDefaults, isNestedSchema,
   nestedPrototype,
-  SchemaResult,
+  SchemaResult
 } from "./schema";
 
 const defaultResultTransformer = (value: unknown) => value;
