@@ -1,7 +1,7 @@
-import {Movie} from './Movie';
+import {Movie} from './Movie'
 
 export interface MovieDatabase {
-	getMovies(): Movie[];
+  getMovies(): Movie[]
 }
 
-export const TYPE = Symbol('MovieDatabase');
+export const TYPE = Symbol('MovieDatabase')
