@@ -1,0 +1,11 @@
+{
+	"grandparent": {
+		"port": 6000
+	},
+	"parent": {
+		"port": 7000
+	},
+	"child": {
+		"port": 8000
+	}
+}

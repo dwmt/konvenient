@@ -9,17 +9,20 @@ import {
 } from '../src/schema'
 
 describe('isNestedSchema', () => {
-  it('returns true if it has NestedSchema', () => {
-    const target: NestedConfigurationSchema = Object.create(
-      null,
-    ) as NestedConfigurationSchema
-    target[nestedSchema] = true
+	it('returns true if it has NestedSchema', () => {
+		// Given
+		const target: NestedConfigurationSchema = Object.create(
+			null,
+		) as NestedConfigurationSchema
+		target[nestedSchema] = true
 
-    expect(isNestedSchema(target)).toBe(true)
-  })
+		// Expect
+		expect(isNestedSchema(target)).toBe(true)
+	})
 
-  it('returns false if it does not have NestedSchema', () => {
-    const target = Object.create(null) as DecoratedPrototype
+	it('returns false if it does not have NestedSchema', () => {
+		// Given
+		const target = Object.create(null) as DecoratedPrototype
 
     const schema: ConfigurableSchema = {
       foo: 'bar',
@@ -27,28 +30,33 @@ describe('isNestedSchema', () => {
 
     target[configurationSchema] = schema
 
-    expect(isNestedSchema(target)).toBe(false)
-  })
+		// Expect
+		expect(isNestedSchema(target)).toBe(false)
+	})
 })
 
 describe('isNestedSchemaWithDefauts', () => {
-  it('returns true if it has nestedSchema and default', () => {
-    const target: NestedConfigurationSchemaWithDefaults = Object.create(
-      null,
-    ) as NestedConfigurationSchemaWithDefaults
-    target[nestedSchema] = true
+	it('returns true if it has nestedSchema and default', () => {
+		// Given
+		const target: NestedConfigurationSchemaWithDefaults = Object.create(
+			null,
+		) as NestedConfigurationSchemaWithDefaults
+		target[nestedSchema] = true
 
-    expect(isNestedSchema(target)).toBe(true)
-  })
+		// Expect
+		expect(isNestedSchema(target)).toBe(true)
+	})
 
-  it('returns false if it does not have NestedSchema', () => {
-    const target = Object.create(null) as DecoratedPrototype
-    const schema: ConfigurableSchema = {
-      foo: 'bar',
-    }
+	it('returns false if it does not have NestedSchema', () => {
+		// Given
+		const target = Object.create(null) as DecoratedPrototype
+		const schema: ConfigurableSchema = {
+			foo: 'bar',
+		}
 
     target[configurationSchema] = schema
 
-    expect(isNestedSchema(target)).toBe(false)
-  })
+		// Expect
+		expect(isNestedSchema(target)).toBe(false)
+	})
 })

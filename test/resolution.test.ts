@@ -3,41 +3,53 @@ import {resolveEnv} from '../src/resolution'
 import {ConfigurationSchema} from '../src/schema'
 
 describe('resolveEnv', () => {
-  it('resolves values from environment variables', () => {
-    const schema: ConfigurationSchema = {
-      foo: {
-        doc: 'Foo',
-        format: String,
-      },
-    }
+	it('resolves values from environment variables', () => {
+		// Given
+		const schema: ConfigurationSchema = {
+			foo: {
+				doc: 'Foo',
+				format: String,
+			},
+		}
 
-    resolveEnv(schema, 'TEST')
-    expect(schema.foo.env).toEqual('TEST_FOO')
-  })
+		// When
+		resolveEnv(schema, 'TEST')
 
-  it('does not update a schema with an env property', () => {
-    const schema: ConfigurationSchema = {
-      foo: {
-        doc: 'Foo',
-        env: 'FOO',
-        format: String,
-      },
-    }
+		// Then
+		expect(schema.foo.env).toEqual('TEST_FOO')
+	})
 
-    resolveEnv(schema, 'TEST')
-    expect(schema).toEqual(schema)
-  })
+	it('does not update a schema with an env property', () => {
+		// Given
+		const schema: ConfigurationSchema = {
+			foo: {
+				doc: 'Foo',
+				env: 'FOO',
+				format: String,
+			},
+		}
 
-  it('does not update a schema with a neverLoadFromEnv property', () => {
-    const schema: ConfigurationSchema = {
-      foo: {
-        doc: 'Foo',
-        neverLoadFromEnv: true,
-        format: String,
-      },
-    }
+		// When
+		resolveEnv(schema, 'TEST')
 
-    resolveEnv(schema, 'TEST')
-    expect(schema).toEqual(schema)
-  })
+		// Then
+		expect(schema).toEqual(schema)
+	})
+
+	it('does not update a schema with a neverLoadFromEnv property', () => {
+		// Given
+		const schema: ConfigurationSchema = {
+			foo: {
+				doc: 'Foo',
+				neverLoadFromEnv: true,
+				format: String,
+			},
+		}
+
+		// When
+		resolveEnv(schema, 'TEST')
+
+		// Then
+		expect(schema).toEqual(schema)
+	})
 })

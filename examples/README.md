@@ -28,6 +28,8 @@ Run any of them with npm from the this directory, for example, `npm run example:
     * Load configuration values using a custom parser, from YAML files.
   * [10 No Prefix](src/recipes/10-no-prefix/index.ts)
     * Load configuration values as top level properties.
+  * [11 Inheritance](src/recipes/11-inheritance/index.ts)
+    * Inherit configurable properties from other configuration classes.
 
 ## Examples
 
