@@ -54,56 +54,56 @@ export type LoadedTarget = {
 export function Configuration(
   options: Partial<ConfigurationOptions> = defaultConfigurationOptions,
 ) {
-	return function (constructor: new () => any) {
-		const actualOptions: FinalizedConfigurationOptions = {
-			...defaultConfigurationOptions,
-			pathPrefix: libraryConfiguration.fileKeyDerivationStrategy(
-				constructor.name,
-			),
-			envPrefix: libraryConfiguration.envKeyDerivationStrategy.deriveKey(
-				constructor.name,
-			),
-			...options,
-			name: constructor.name,
-		}
+  return function (constructor: new () => any) {
+    const actualOptions: FinalizedConfigurationOptions = {
+      ...defaultConfigurationOptions,
+      pathPrefix: libraryConfiguration.fileKeyDerivationStrategy(
+        constructor.name,
+      ),
+      envPrefix: libraryConfiguration.envKeyDerivationStrategy.deriveKey(
+        constructor.name,
+      ),
+      ...options,
+      name: constructor.name,
+    }
 
-		const wrappedConstructor = (
-			injectable ? (injectable()(constructor) as new () => any) : constructor
-		) as DecoratedConstructor
+    const wrappedConstructor = (
+      injectable ? (injectable()(constructor) as new () => any) : constructor
+    ) as DecoratedConstructor
 
-		wrappedConstructor.prototype[optionsKey] = actualOptions
+    wrappedConstructor.prototype[optionsKey] = actualOptions
 
-		const parent: unknown = Object.getPrototypeOf(wrappedConstructor.prototype)
-		const parentSchema = extractSchemaFromPrototype(parent)
-		const currentSchema = extractSchemaFromPrototype(
-			wrappedConstructor.prototype,
-		)
-		for (const propertyKey of Object.keys(parentSchema)) {
-			currentSchema[propertyKey] = cloneDeepWith(parentSchema[propertyKey])
+    const parent: unknown = Object.getPrototypeOf(wrappedConstructor.prototype)
+    const parentSchema = extractSchemaFromPrototype(parent)
+    const currentSchema = extractSchemaFromPrototype(
+      wrappedConstructor.prototype,
+    )
+    for (const propertyKey of Object.keys(parentSchema)) {
+      currentSchema[propertyKey] = cloneDeepWith(parentSchema[propertyKey])
 
-			Object.defineProperty(wrappedConstructor.prototype, propertyKey, {
-				enumerable: true,
-				get() {
-					return retrieveValue(wrappedConstructor.prototype, propertyKey)
-				},
-				set(value) {
-					if (
-						!Object.prototype.hasOwnProperty.call(
-							currentSchema[propertyKey],
-							'default',
-						)
-					) {
-						;(
-							currentSchema[propertyKey] as ConfigurableSchemaWithDefault
-						).default = value
-					}
-				},
-			})
-		}
+      Object.defineProperty(wrappedConstructor.prototype, propertyKey, {
+        enumerable: true,
+        get() {
+          return retrieveValue(wrappedConstructor.prototype, propertyKey)
+        },
+        set(value) {
+          if (
+            !Object.prototype.hasOwnProperty.call(
+              currentSchema[propertyKey],
+              'default',
+            )
+          ) {
+            ;(
+              currentSchema[propertyKey] as ConfigurableSchemaWithDefault
+            ).default = value
+          }
+        },
+      })
+    }
 
-		// eslint-disable-next-line new-cap, no-new
-		new wrappedConstructor()
-	}
+    // eslint-disable-next-line new-cap, no-new
+    new wrappedConstructor()
+  }
 }
 
 /**
@@ -116,28 +116,28 @@ export function Configuration(
  * @returns The actual decorator applied to the field.
  */
 export function Configurable<T = any>(
-	propertySchema: ConfigurableSchema<T> = {},
+  propertySchema: ConfigurableSchema<T> = {},
 ) {
-	return function (target: any, propertyKey: string) {
-		const schema = extractSchemaFromPrototype(target)
+  return function (target: any, propertyKey: string) {
+    const schema = extractSchemaFromPrototype(target)
 
-		schema[propertyKey] = propertySchema
+    schema[propertyKey] = propertySchema
 
-		Object.defineProperty(target, propertyKey, {
-			enumerable: true,
-			get() {
-				return retrieveValue(target, propertyKey)
-			},
-			set(value) {
-				if (
-					!Object.prototype.hasOwnProperty.call(schema[propertyKey], 'default')
-				) {
-					;(schema[propertyKey] as ConfigurableSchemaWithDefault).default =
-						value
-				}
-			},
-		})
-	}
+    Object.defineProperty(target, propertyKey, {
+      enumerable: true,
+      get() {
+        return retrieveValue(target, propertyKey)
+      },
+      set(value) {
+        if (
+          !Object.prototype.hasOwnProperty.call(schema[propertyKey], 'default')
+        ) {
+          ;(schema[propertyKey] as ConfigurableSchemaWithDefault).default =
+            value
+        }
+      },
+    })
+  }
 }
 
 /**
@@ -185,9 +185,9 @@ export function nestedSchemaOf(target: any) {
 }
 
 function retrieveValue(target: any, key: string): unknown {
-	if (!Object.prototype.hasOwnProperty.call(target, loadedValues)) {
-		loadConfigurationOf(target)
-	}
+  if (!Object.prototype.hasOwnProperty.call(target, loadedValues)) {
+    loadConfigurationOf(target)
+  }
 
   return (target as LoadedTarget)[loadedValues][key]
 }

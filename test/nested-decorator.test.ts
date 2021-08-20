@@ -44,14 +44,14 @@ describe('Nested Configuration: property decorator for a Configuration type', ()
         format: String,
       },
     }
-    ;(expectedPrototype as unknown as LoadedTarget)[loadedValues] = {
-      bar: 'bar',
-    }
 
     expectedPrototype[optionsKey] = {
-      envPrefix: 'TEST',
-      name: 'TestConfig',
-      pathPrefix: 'test',
+      envPrefix: 'FOO',
+      name: 'FooConfig',
+      pathPrefix: 'foo',
+    }
+    ;(expectedPrototype as unknown as LoadedTarget)[loadedValues] = {
+      bar: 'bar',
     }
 
     expect(
@@ -64,6 +64,11 @@ describe('Nested Configuration: property decorator for a Configuration type', ()
           format: String,
           default: 'bar',
         },
+        // [optionsKey]: {
+        //   envPrefix: 'FOO',
+        //   name: 'FooConfig',
+        //   pathPrefix: 'foo',
+        // },
         [nestedSchema]: true,
         [nestedPrototype]: expectedPrototype,
       },
@@ -102,7 +107,14 @@ describe('nestedSchemaOf', () => {
     const expected: NestedConfigurationSchema = {
       ...proto[configurationSchema],
       [nestedSchema]: true,
-      [nestedPrototype]: proto,
+      [nestedPrototype]: {
+        ...proto,
+        [optionsKey]: {
+          envPrefix: 'STORE',
+          name: 'StoreConfig',
+          pathPrefix: './store',
+        },
+      },
     }
 
     expect(nestedSchemaOf(target)).toEqual(expected)
