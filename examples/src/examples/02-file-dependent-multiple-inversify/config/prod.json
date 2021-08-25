@@ -1,8 +1,8 @@
 {
-	"http": {
-		"port": 6969
-	},
-	"database": {
-		"connectionString": "mongo://production-mongo:27017"
-	}
+  "http": {
+    "port": 6969
+  },
+  "database": {
+    "connectionString": "mongo://production-mongo:27017"
+  }
 }

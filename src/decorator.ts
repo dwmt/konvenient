@@ -2,13 +2,13 @@ import {SchemaObj, ValidateOptions} from 'convict'
 import cloneDeepWith from 'lodash.clonedeepwith'
 import {libraryConfiguration} from './configuration'
 import {
-	ConfigurableSchema,
-	ConfigurationSchema,
-	ConfigurableSchemaWithDefault,
-	ConfigurationSchemaWithDefaults,
-	NestedConfigurationSchema,
-	nestedPrototype,
-	nestedSchema,
+  ConfigurableSchema,
+  ConfigurationSchema,
+  ConfigurableSchemaWithDefault,
+  ConfigurationSchemaWithDefaults,
+  NestedConfigurationSchema,
+  nestedPrototype,
+  nestedSchema,
 } from './schema'
 import {injectable} from './peer/inversify'
 import {resolveValues, resolveNestedPrototypes, resolveEnv} from './resolution'
@@ -18,29 +18,29 @@ export const configurationSchema = Symbol('configurationSchema')
 export const loadedValues = Symbol('loadedValues')
 
 export interface ConfigurationOptions {
-	pathPrefix?: string
-	envPrefix?: string
+  pathPrefix?: string
+  envPrefix?: string
 }
 
 const defaultConfigurationOptions: ConfigurationOptions = {}
 
 export interface FinalizedConfigurationOptions
-	extends Required<ConfigurationOptions> {
-	name: string
+  extends Required<ConfigurationOptions> {
+  name: string
 }
 
 export interface DecoratedPrototype {
-	[optionsKey]: FinalizedConfigurationOptions
-	[configurationSchema]: ConfigurationSchema
+  [optionsKey]: FinalizedConfigurationOptions
+  [configurationSchema]: ConfigurationSchema
 }
 
 export interface DecoratedConstructor {
-	prototype: DecoratedPrototype
-	new (): any
+  prototype: DecoratedPrototype
+  new (): any
 }
 
 export type LoadedTarget = {
-	[loadedValues]: Record<string, unknown>
+  [loadedValues]: Record<string, unknown>
 }
 
 /**
@@ -52,58 +52,58 @@ export type LoadedTarget = {
  * @returns The actual decorator applied to the class.
  */
 export function Configuration(
-	options: Partial<ConfigurationOptions> = defaultConfigurationOptions,
+  options: Partial<ConfigurationOptions> = defaultConfigurationOptions,
 ) {
-	return function (constructor: new () => any) {
-		const actualOptions: FinalizedConfigurationOptions = {
-			...defaultConfigurationOptions,
-			pathPrefix: libraryConfiguration.fileKeyDerivationStrategy(
-				constructor.name,
-			),
-			envPrefix: libraryConfiguration.envKeyDerivationStrategy.deriveKey(
-				constructor.name,
-			),
-			...options,
-			name: constructor.name,
-		}
+  return function (constructor: new () => any) {
+    const actualOptions: FinalizedConfigurationOptions = {
+      ...defaultConfigurationOptions,
+      pathPrefix: libraryConfiguration.fileKeyDerivationStrategy(
+        constructor.name,
+      ),
+      envPrefix: libraryConfiguration.envKeyDerivationStrategy.deriveKey(
+        constructor.name,
+      ),
+      ...options,
+      name: constructor.name,
+    }
 
-		const wrappedConstructor = (
-			injectable ? (injectable()(constructor) as new () => any) : constructor
-		) as DecoratedConstructor
+    const wrappedConstructor = (
+      injectable ? (injectable()(constructor) as new () => any) : constructor
+    ) as DecoratedConstructor
 
-		wrappedConstructor.prototype[optionsKey] = actualOptions
+    wrappedConstructor.prototype[optionsKey] = actualOptions
 
-		const parent: unknown = Object.getPrototypeOf(wrappedConstructor.prototype)
-		const parentSchema = extractSchemaFromPrototype(parent)
-		const currentSchema = extractSchemaFromPrototype(
-			wrappedConstructor.prototype,
-		)
-		for (const propertyKey of Object.keys(parentSchema)) {
-			currentSchema[propertyKey] = cloneDeepWith(parentSchema[propertyKey])
+    const parent: unknown = Object.getPrototypeOf(wrappedConstructor.prototype)
+    const parentSchema = extractSchemaFromPrototype(parent)
+    const currentSchema = extractSchemaFromPrototype(
+      wrappedConstructor.prototype,
+    )
+    for (const propertyKey of Object.keys(parentSchema)) {
+      currentSchema[propertyKey] = cloneDeepWith(parentSchema[propertyKey])
 
-			Object.defineProperty(wrappedConstructor.prototype, propertyKey, {
-				enumerable: true,
-				get() {
-					return retrieveValue(wrappedConstructor.prototype, propertyKey)
-				},
-				set(value) {
-					if (
-						!Object.prototype.hasOwnProperty.call(
-							currentSchema[propertyKey],
-							'default',
-						)
-					) {
-						;(
-							currentSchema[propertyKey] as ConfigurableSchemaWithDefault
-						).default = value
-					}
-				},
-			})
-		}
+      Object.defineProperty(wrappedConstructor.prototype, propertyKey, {
+        enumerable: true,
+        get() {
+          return retrieveValue(wrappedConstructor.prototype, propertyKey)
+        },
+        set(value) {
+          if (
+            !Object.prototype.hasOwnProperty.call(
+              currentSchema[propertyKey],
+              'default',
+            )
+          ) {
+            ;(
+              currentSchema[propertyKey] as ConfigurableSchemaWithDefault
+            ).default = value
+          }
+        },
+      })
+    }
 
-		// eslint-disable-next-line new-cap, no-new
-		new wrappedConstructor()
-	}
+    // eslint-disable-next-line new-cap, no-new
+    new wrappedConstructor()
+  }
 }
 
 /**
@@ -116,28 +116,28 @@ export function Configuration(
  * @returns The actual decorator applied to the field.
  */
 export function Configurable<T = any>(
-	propertySchema: ConfigurableSchema<T> = {},
+  propertySchema: ConfigurableSchema<T> = {},
 ) {
-	return function (target: any, propertyKey: string) {
-		const schema = extractSchemaFromPrototype(target)
+  return function (target: any, propertyKey: string) {
+    const schema = extractSchemaFromPrototype(target)
 
-		schema[propertyKey] = propertySchema
+    schema[propertyKey] = propertySchema
 
-		Object.defineProperty(target, propertyKey, {
-			enumerable: true,
-			get() {
-				return retrieveValue(target, propertyKey)
-			},
-			set(value) {
-				if (
-					!Object.prototype.hasOwnProperty.call(schema[propertyKey], 'default')
-				) {
-					;(schema[propertyKey] as ConfigurableSchemaWithDefault).default =
-						value
-				}
-			},
-		})
-	}
+    Object.defineProperty(target, propertyKey, {
+      enumerable: true,
+      get() {
+        return retrieveValue(target, propertyKey)
+      },
+      set(value) {
+        if (
+          !Object.prototype.hasOwnProperty.call(schema[propertyKey], 'default')
+        ) {
+          ;(schema[propertyKey] as ConfigurableSchemaWithDefault).default =
+            value
+        }
+      },
+    })
+  }
 }
 
 /**
@@ -149,121 +149,121 @@ export function Configurable<T = any>(
  * @returns The actual decorator applied to the field.
  */
 export function Nested() {
-	return function (target: any, propertyKey: string) {
-		const schema = extractSchemaFromPrototype(target)
+  return function (target: any, propertyKey: string) {
+    const schema = extractSchemaFromPrototype(target)
 
-		Object.defineProperty(target, propertyKey, {
-			enumerable: true,
-			get() {
-				return retrieveValue(target, propertyKey)
-			},
-			set(value) {
-				if (!Object.prototype.hasOwnProperty.call(schema, propertyKey)) {
-					schema[propertyKey] = nestedSchemaOf(value)
-				}
-			},
-		})
-	}
+    Object.defineProperty(target, propertyKey, {
+      enumerable: true,
+      get() {
+        return retrieveValue(target, propertyKey)
+      },
+      set(value) {
+        if (!Object.prototype.hasOwnProperty.call(schema, propertyKey)) {
+          schema[propertyKey] = nestedSchemaOf(value)
+        }
+      },
+    })
+  }
 }
 
-function nestedSchemaOf(target: any) {
-	const clonedSchema = cloneDeepWith(
-		extractSchemaFromPrototype(Object.getPrototypeOf(target)),
-		(value) => {
-			if (typeof value === 'function') {
-				return value as unknown
-			}
+export function nestedSchemaOf(target: any) {
+  const clonedSchema = cloneDeepWith(
+    extractSchemaFromPrototype(Object.getPrototypeOf(target)),
+    (value) => {
+      if (typeof value === 'function') {
+        return value as unknown
+      }
 
-			return undefined
-		},
-	) as ConfigurationSchema
+      return undefined
+    },
+  ) as ConfigurationSchema
 
-	return Object.assign(clonedSchema, {
-		[nestedSchema]: true,
-		[nestedPrototype]: Object.getPrototypeOf(target) as unknown,
-	}) as NestedConfigurationSchema
+  return Object.assign(clonedSchema, {
+    [nestedSchema]: true,
+    [nestedPrototype]: Object.getPrototypeOf(target) as unknown,
+  }) as NestedConfigurationSchema
 }
 
 function retrieveValue(target: any, key: string): unknown {
-	if (!Object.prototype.hasOwnProperty.call(target, loadedValues)) {
-		loadConfigurationOf(target)
-	}
+  if (!Object.prototype.hasOwnProperty.call(target, loadedValues)) {
+    loadConfigurationOf(target)
+  }
 
-	return (target as LoadedTarget)[loadedValues][key]
+  return (target as LoadedTarget)[loadedValues][key]
 }
 
 export function isDecoratedPrototype(
-	target: any,
+  target: any,
 ): target is DecoratedPrototype {
-	return Object.prototype.hasOwnProperty.call(target, configurationSchema)
+  return Object.prototype.hasOwnProperty.call(target, configurationSchema)
 }
 
 export function extractSchemaFromPrototype(target: any): ConfigurationSchema {
-	if (isDecoratedPrototype(target)) {
-		return target[configurationSchema]
-	}
+  if (isDecoratedPrototype(target)) {
+    return target[configurationSchema]
+  }
 
-	const schema = Object.create(null) as ConfigurationSchema
+  const schema = Object.create(null) as ConfigurationSchema
 
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-	target[configurationSchema] = schema
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  target[configurationSchema] = schema
 
-	return schema
+  return schema
 }
 
 function loadConfigurationOf(target: any) {
-	const schema = extractSchemaFromPrototype(
-		target,
-	) as ConfigurationSchemaWithDefaults
+  const schema = extractSchemaFromPrototype(
+    target,
+  ) as ConfigurationSchemaWithDefaults
 
-	resolveEnv(schema, (target as DecoratedPrototype)[optionsKey].envPrefix)
+  resolveEnv(schema, (target as DecoratedPrototype)[optionsKey].envPrefix)
 
-	libraryConfiguration.onSchemaAssembledHook(
-		schema,
-		(target as DecoratedPrototype)[optionsKey].name,
-	)
+  libraryConfiguration.onSchemaAssembledHook(
+    schema,
+    (target as DecoratedPrototype)[optionsKey].name,
+  )
 
-	const convictSchema = Object.create(null) as SchemaObj
+  const convictSchema = Object.create(null) as SchemaObj
 
-	for (const key of Object.keys(schema)) {
-		convictSchema[key] = schema[key]
-	}
+  for (const key of Object.keys(schema)) {
+    convictSchema[key] = schema[key]
+  }
 
-	let config
-	if ((target as DecoratedPrototype)[optionsKey].pathPrefix === '') {
-		config = libraryConfiguration.convict(convictSchema)
-	} else {
-		config = libraryConfiguration.convict({
-			[(target as DecoratedPrototype)[optionsKey].pathPrefix]: convictSchema,
-		})
-	}
+  let config
+  if ((target as DecoratedPrototype)[optionsKey].pathPrefix === '') {
+    config = libraryConfiguration.convict(convictSchema)
+  } else {
+    config = libraryConfiguration.convict({
+      [(target as DecoratedPrototype)[optionsKey].pathPrefix]: convictSchema,
+    })
+  }
 
-	config.loadFile(libraryConfiguration.sources)
+  config.loadFile(libraryConfiguration.sources)
 
-	// The type definition of convict does not list the output property,
-	// thus, we had to get creative.
-	config.validate({
-		allowed: 'warn',
-		output() {
-			// No-op.
-		},
-	} as ValidateOptions)
+  // The type definition of convict does not list the output property,
+  // thus, we had to get creative.
+  config.validate({
+    allowed: 'warn',
+    output() {
+      // No-op.
+    },
+  } as ValidateOptions)
 
-	libraryConfiguration.onConfigLoadedHook(
-		schema,
-		config,
-		(target as DecoratedPrototype)[optionsKey].name,
-	)
+  libraryConfiguration.onConfigLoadedHook(
+    schema,
+    config,
+    (target as DecoratedPrototype)[optionsKey].name,
+  )
 
-	const values = Object.create(null) as Record<string, unknown>
+  const values = Object.create(null) as Record<string, unknown>
 
-	resolveValues(
-		values,
-		schema,
-		config,
-		(target as DecoratedPrototype)[optionsKey].pathPrefix,
-	)
+  resolveValues(
+    values,
+    schema,
+    config,
+    (target as DecoratedPrototype)[optionsKey].pathPrefix,
+  )
 
-	resolveNestedPrototypes(values, schema)
-	;(target as LoadedTarget)[loadedValues] = values
+  resolveNestedPrototypes(values, schema)
+  ;(target as LoadedTarget)[loadedValues] = values
 }

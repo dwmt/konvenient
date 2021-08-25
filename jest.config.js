@@ -1,11 +1,18 @@
+const {compilerOptions: tsconfig} = require('./tsconfig.json')
+
 /** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
-	preset: 'ts-jest',
-	testEnvironment: 'node',
+  preset: 'ts-jest',
+  testEnvironment: 'node',
 
-	moduleFileExtensions: ['js', 'ts', 'jsx', 'tsx', 'json'],
+  moduleFileExtensions: ['js', 'ts', 'jsx', 'tsx', 'json'],
 
-	testRegex: '/test/.*\\.test\\.(ts|tsx)$',
+  testRegex: '/test/.*\\.test\\.(ts|tsx)$',
 
-	reporters: ['default', 'jest-junit'],
+  reporters: ['default', 'jest-junit'],
+  globals: {
+    'ts-jest': {
+      tsconfig,
+    },
+  },
 }
