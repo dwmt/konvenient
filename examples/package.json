@@ -16,7 +16,8 @@
 		"recipe:08": "ts-node src/recipes/08-simple-file",
 		"recipe:09": "ts-node src/recipes/09-yaml-file",
 		"recipe:10": "ts-node src/recipes/10-no-prefix",
-		"recipe:11": "ts-node src/recipes/11-inheritance"
+		"recipe:11": "ts-node src/recipes/11-inheritance",
+		"recipe:12": "ts-node src/recipes/12-reconfigure"
 	},
 	"keywords": [],
 	"author": "",
