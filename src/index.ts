@@ -7,6 +7,7 @@ export {
 	FileKeyDerivationStrategy,
 	EnvKeyDerivationStrategy,
 } from './key-derivation'
+export {reconfigure} from './reconfigure'
 export {
 	ConfigurableSchemaWithDefault,
 	ConfigurationSchemaWithDefaults,
