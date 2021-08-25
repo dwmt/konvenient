@@ -13,14 +13,14 @@
 		"compile:watch": "tsc --watch",
 		"docs": "typedoc --out generated-docs src",
 		"example": "ts-node ./examples/01-simple-usage",
-		"format": "npx prettier --config ./prettier.config.js --write '**/**/*.js'",
+		"format": "npx prettier --config ./prettier.config.js --write '**/**/*.ts'",
 		"lint": "xo",
 		"lint:fix": "xo --fix",
 		"lint:staged": "lint-staged",
 		"prepare": "husky install",
 		"prepublishOnly": "npm run clean && npm run compile",
 		"test": "jest --coverage",
-		"test::watch": "jest --watch"
+		"test:watch": "jest --watch"
 	},
 	"repository": {
 		"type": "git",
