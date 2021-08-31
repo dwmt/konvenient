@@ -4,7 +4,6 @@ import {
   ConfigurationSchema,
   ConfigurationSchemaWithDefaults,
   isNestedSchema,
-  nestedPrototype,
   SchemaResult,
 } from './schema'
 
@@ -63,16 +62,6 @@ export function resolveValues(
         (schema[key].result as SchemaResult<any>) ?? defaultResultTransformer
 
       target[key] = transformer(value)
-    }
-  }
-}
-
-export function resolveNestedPrototypes(target: any, schema: any) {
-  for (const key of Object.keys(schema)) {
-    if (isNestedSchema(schema[key])) {
-      resolveNestedPrototypes(target[key], schema[key])
-
-      Object.setPrototypeOf(target[key], schema[key][nestedPrototype as any])
     }
   }
 }

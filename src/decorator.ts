@@ -7,11 +7,10 @@ import {
   ConfigurableSchemaWithDefault,
   ConfigurationSchemaWithDefaults,
   NestedConfigurationSchema,
-  nestedPrototype,
   nestedSchema,
 } from './schema'
 import {injectable} from './peer/inversify'
-import {resolveValues, resolveNestedPrototypes, resolveEnv} from './resolution'
+import {resolveValues, resolveEnv} from './resolution'
 
 export const optionsKey = Symbol('options')
 export const configurationSchema = Symbol('configurationSchema')
@@ -54,7 +53,7 @@ export type LoadedTarget = {
 export function Configuration(
   options: Partial<ConfigurationOptions> = defaultConfigurationOptions,
 ) {
-  return function (constructor: new () => any) {
+  return function <T>(constructor: new () => T): new () => T {
     const actualOptions: FinalizedConfigurationOptions = {
       ...defaultConfigurationOptions,
       pathPrefix: libraryConfiguration.fileKeyDerivationStrategy(
@@ -80,29 +79,48 @@ export function Configuration(
     )
     for (const propertyKey of Object.keys(parentSchema)) {
       currentSchema[propertyKey] = cloneDeepWith(parentSchema[propertyKey])
+    }
 
-      Object.defineProperty(wrappedConstructor.prototype, propertyKey, {
-        enumerable: true,
-        get() {
-          return retrieveValue(wrappedConstructor.prototype, propertyKey)
-        },
-        set(value) {
-          if (
+    // eslint-disable-next-line new-cap,@typescript-eslint/no-unsafe-assignment
+    const instance = new wrappedConstructor()
+
+    const newClass = class extends (wrappedConstructor as any) {
+      constructor() {
+        // eslint-disable-next-line  @typescript-eslint/no-unsafe-call,constructor-super
+        super()
+        for (const propertyKey of Object.keys(currentSchema)) {
+          // @ts-expect-error The type checker (rightly) thinks this will always be false.
+          if (currentSchema[propertyKey] === 'nested') {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            currentSchema[propertyKey] = nestedSchemaOf(instance[propertyKey])
+          } else if (
             !Object.prototype.hasOwnProperty.call(
               currentSchema[propertyKey],
               'default',
             )
           ) {
-            ;(
-              currentSchema[propertyKey] as ConfigurableSchemaWithDefault
-            ).default = value
+            const withDefault = currentSchema[
+              propertyKey
+            ] as ConfigurableSchemaWithDefault
+
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            withDefault.default = instance[propertyKey]
           }
-        },
-      })
+
+          Object.defineProperty(this, propertyKey, {
+            enumerable: true,
+            get() {
+              return retrieveValue(wrappedConstructor.prototype, propertyKey)
+            },
+          })
+        }
+      }
     }
 
-    // eslint-disable-next-line new-cap, no-new
-    new wrappedConstructor()
+    ;(newClass.prototype as DecoratedPrototype)[configurationSchema] =
+      currentSchema
+
+    return newClass as new () => T
   }
 }
 
@@ -122,21 +140,6 @@ export function Configurable<T = any>(
     const schema = extractSchemaFromPrototype(target)
 
     schema[propertyKey] = propertySchema
-
-    Object.defineProperty(target, propertyKey, {
-      enumerable: true,
-      get() {
-        return retrieveValue(target, propertyKey)
-      },
-      set(value) {
-        if (
-          !Object.prototype.hasOwnProperty.call(schema[propertyKey], 'default')
-        ) {
-          ;(schema[propertyKey] as ConfigurableSchemaWithDefault).default =
-            value
-        }
-      },
-    })
   }
 }
 
@@ -152,17 +155,8 @@ export function Nested() {
   return function (target: any, propertyKey: string) {
     const schema = extractSchemaFromPrototype(target)
 
-    Object.defineProperty(target, propertyKey, {
-      enumerable: true,
-      get() {
-        return retrieveValue(target, propertyKey)
-      },
-      set(value) {
-        if (!Object.prototype.hasOwnProperty.call(schema, propertyKey)) {
-          schema[propertyKey] = nestedSchemaOf(value)
-        }
-      },
-    })
+    // @ts-expect-error Using a placeholder here just to mark it as nested.
+    schema[propertyKey] = 'nested'
   }
 }
 
@@ -180,7 +174,6 @@ export function nestedSchemaOf(target: any) {
 
   return Object.assign(clonedSchema, {
     [nestedSchema]: true,
-    [nestedPrototype]: Object.getPrototypeOf(target) as unknown,
   }) as NestedConfigurationSchema
 }
 
@@ -263,7 +256,5 @@ function loadConfigurationOf(target: any) {
     config,
     (target as DecoratedPrototype)[optionsKey].pathPrefix,
   )
-
-  resolveNestedPrototypes(values, schema)
   ;(target as LoadedTarget)[loadedValues] = values
 }

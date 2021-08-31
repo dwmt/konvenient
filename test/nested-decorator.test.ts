@@ -3,8 +3,6 @@ import {
   Configuration as configuration,
   configurationSchema,
   DecoratedPrototype,
-  LoadedTarget,
-  loadedValues,
   Nested as nested,
   nestedSchemaOf,
   optionsKey,
@@ -12,7 +10,6 @@ import {
 import {
   ConfigurableSchema,
   NestedConfigurationSchema,
-  nestedPrototype,
   nestedSchema,
 } from '../src/schema'
 
@@ -35,24 +32,6 @@ export class TestConfig {
 describe('Nested Configuration: property decorator for a Configuration type', () => {
   it('should setup the nested configuration on the object', () => {
     const target = new TestConfig()
-    const expectedPrototype = target.foo as unknown as DecoratedPrototype
-    expectedPrototype[configurationSchema] = {
-      bar: {
-        default: 'bar',
-        doc: 'Foobar',
-        env: 'BAR',
-        format: String,
-      },
-    }
-
-    expectedPrototype[optionsKey] = {
-      envPrefix: 'FOO',
-      name: 'FooConfig',
-      pathPrefix: 'foo',
-    }
-    ;(expectedPrototype as unknown as LoadedTarget)[loadedValues] = {
-      bar: 'bar',
-    }
 
     expect(
       (target as unknown as DecoratedPrototype)[configurationSchema],
@@ -70,7 +49,6 @@ describe('Nested Configuration: property decorator for a Configuration type', ()
         //   pathPrefix: 'foo',
         // },
         [nestedSchema]: true,
-        [nestedPrototype]: expectedPrototype,
       },
     })
   })
@@ -104,17 +82,9 @@ describe('nestedSchemaOf', () => {
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const target: NestedConfigurationSchema = Object.create(proto)
-    const expected: NestedConfigurationSchema = {
+    const expected = {
       ...proto[configurationSchema],
       [nestedSchema]: true,
-      [nestedPrototype]: {
-        ...proto,
-        [optionsKey]: {
-          envPrefix: 'STORE',
-          name: 'StoreConfig',
-          pathPrefix: './store',
-        },
-      },
     }
 
     expect(nestedSchemaOf(target)).toEqual(expected)

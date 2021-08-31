@@ -1,7 +1,6 @@
 import {PredefinedFormat} from 'convict'
 
 export const nestedSchema = Symbol('nestedSchema')
-export const nestedPrototype = Symbol('nestedPrototype')
 
 /**
  * Transforms the loaded configurable field value into a new value/type.
@@ -77,7 +76,6 @@ export interface NestedConfigurationSchemaWithDefaults {
   [key: string]:
     | ConfigurableSchemaWithDefault
     | NestedConfigurationSchemaWithDefaults
-  [nestedPrototype]: unknown
   [nestedSchema]: true
 }
 
@@ -99,7 +97,6 @@ export type ConfigurationSchema = Record<
 
 export interface NestedConfigurationSchema {
   [key: string]: ConfigurableSchema | NestedConfigurationSchema
-  [nestedPrototype]: unknown
   [nestedSchema]: true
 }
 
