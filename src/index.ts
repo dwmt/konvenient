@@ -1,7 +1,12 @@
 import convict from 'convict'
 
 export {KonvenientConfigurator, configurator} from './configuration'
-export {Configuration, Configurable, Nested} from './decorator'
+export {
+  Configuration,
+  Configurable,
+  Nested,
+  ConfigurationOptions,
+} from './decorator'
 export {OnConfigLoadedHook, OnSchemaAssembledHook} from './hook'
 export {
   FileKeyDerivationStrategy,
@@ -9,6 +14,7 @@ export {
 } from './key-derivation'
 export {reconfigure} from './reconfigure'
 export {
+  ConfigurableSchema,
   ConfigurableSchemaWithDefault,
   ConfigurationSchemaWithDefaults,
   NestedConfigurationSchemaWithDefaults,
