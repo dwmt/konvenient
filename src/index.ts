@@ -23,3 +23,5 @@ export {
   SchemaResult,
 } from './schema'
 export {convict}
+
+export {PredefinedFormat} from 'convict'
