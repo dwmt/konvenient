@@ -13,7 +13,7 @@ enum LogLevel {
 @Configuration()
 class LogConfiguration {
 	// File key: log.level
-	// Env name: EXAMPLE_LOG_LEVEL
+	// Env name: LOG_LEVEL
 	@Configurable({
 		format: [LogLevel.Debug, LogLevel.Info, LogLevel.Warn],
 	})
@@ -24,6 +24,7 @@ class LogConfiguration {
 	}
 }
 
+// LOG_LEVEL becomes ASD_LOG_LEVEL
 reconfigure((options) => {
     options.envPrefix = `ASD_${options.envPrefix}`
 }, LogConfiguration)

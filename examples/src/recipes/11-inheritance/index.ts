@@ -5,7 +5,6 @@ configurator.withSources([`${__dirname}/config.json`]);
 @Configuration()
 class GrandparentConfiguration {
 	// File key: grandparent.port
-	// Env name: GRANDPARENT_PORT
 	@Configurable({
 		doc: 'The port on which the server listens.',
 		format: 'port',
@@ -18,14 +17,12 @@ class GrandparentConfiguration {
 class ParentConfiguration extends GrandparentConfiguration {
 	// For the inherited port property, this class has
 	// File key: parent.port
-	// Env name: PARENT_PORT
 }
 
 @Configuration()
 class ChildConfiguration extends ParentConfiguration {
 	// For the inherited port property, this class has
 	// File key: child.port
-	// Env name: CHILD_PORT
 }
 
 const grandParentConfig = new GrandparentConfiguration()

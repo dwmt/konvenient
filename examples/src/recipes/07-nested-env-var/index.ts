@@ -4,7 +4,7 @@ import {Configuration, Configurable, Nested} from 'konvenient'
 class AuthConfiguration {
   // When accessed on HttpConfiguration.auth, then
   //   File key: http.auth.secret
-  //   Env name: HTTP_AUTH_SUPER_DUPER_SECRET
+  //   Env name: HTTP_AUTH_SECRET
   @Configurable({
     doc: 'Super-duper secret token used for authentication.',
     format: String,
@@ -19,7 +19,7 @@ class AuthConfiguration {
 @Configuration()
 class HttpConfiguration {
   // File key: http.port
-  // Env name: PORT
+  // Env name: HTTP_PORT
   @Configurable<number>({
     doc: 'The port on which the server listens.',
     format: 'port',
