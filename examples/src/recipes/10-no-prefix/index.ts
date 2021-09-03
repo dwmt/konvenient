@@ -3,17 +3,16 @@ import {Configuration, Configurable, configurator} from 'konvenient'
 configurator.withSources([`${__dirname}/config.json`])
 
 @Configuration({
-    pathPrefix: ''
+  pathPrefix: '',
 })
 class HttpConfiguration {
-	// File key: port
-	// Env name: PORT
-	@Configurable({
-		doc: 'The port on which the server listens.',
-		format: 'port',
-		neverLoadFromEnv: true
-	})
-	port = 8080
+  // File key: port
+  @Configurable({
+    doc: 'The port on which the server listens.',
+    format: 'port',
+    neverLoadFromEnv: true,
+  })
+  port = 8080
 }
 
 const config = new HttpConfiguration()

@@ -1,6 +1,6 @@
 {
-    "port": 3000,
-    "greeting": {
-        "message": "I'm running in development mode!"
-    }
+  "port": 3000,
+  "greeting": {
+    "message": "I'm running in development mode!"
+  }
 }
