@@ -9,7 +9,6 @@ import {
   NestedConfigurationSchema,
   nestedSchema,
 } from './schema'
-import {injectable} from './peer/inversify'
 import {resolveValues, resolveEnv} from './resolution'
 
 export const optionsKey = Symbol('options')
@@ -66,25 +65,23 @@ export function Configuration(
       name: constructor.name,
     }
 
-    const wrappedConstructor = (
-      injectable ? (injectable()(constructor) as new () => any) : constructor
-    ) as DecoratedConstructor
+    const decoratedConstructor = constructor as DecoratedConstructor
 
-    wrappedConstructor.prototype[optionsKey] = actualOptions
+    decoratedConstructor.prototype[optionsKey] = actualOptions
 
-    const parent: unknown = Object.getPrototypeOf(wrappedConstructor.prototype)
+    const parent: unknown = Object.getPrototypeOf(decoratedConstructor.prototype)
     const parentSchema = extractSchemaFromPrototype(parent)
     const currentSchema = extractSchemaFromPrototype(
-      wrappedConstructor.prototype,
+      decoratedConstructor.prototype,
     )
     for (const propertyKey of Object.keys(parentSchema)) {
       currentSchema[propertyKey] = cloneDeepWith(parentSchema[propertyKey])
     }
 
     // eslint-disable-next-line new-cap,@typescript-eslint/no-unsafe-assignment
-    const instance = new wrappedConstructor()
+    const instance = new decoratedConstructor()
 
-    const newClass = class extends (wrappedConstructor as any) {
+    const newClass = class extends (decoratedConstructor as any) {
       constructor() {
         // eslint-disable-next-line  @typescript-eslint/no-unsafe-call,constructor-super
         super()
@@ -110,7 +107,7 @@ export function Configuration(
           Object.defineProperty(this, propertyKey, {
             enumerable: true,
             get() {
-              return retrieveValue(wrappedConstructor.prototype, propertyKey)
+              return retrieveValue(decoratedConstructor.prototype, propertyKey)
             },
           })
         }
