@@ -69,7 +69,9 @@ export function Configuration(
 
     decoratedConstructor.prototype[optionsKey] = actualOptions
 
-    const parent: unknown = Object.getPrototypeOf(decoratedConstructor.prototype)
+    const parent: unknown = Object.getPrototypeOf(
+      decoratedConstructor.prototype,
+    )
     const parentSchema = extractSchemaFromPrototype(parent)
     const currentSchema = extractSchemaFromPrototype(
       decoratedConstructor.prototype,
