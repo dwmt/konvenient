@@ -41,8 +41,8 @@
 	"devDependencies": {
 		"@commitlint/cli": "12.1.4",
 		"@dwmt/branchlint": "1.0.4",
-		"@dwmt/commitlint-config-jira-type": "2.0.0",
-		"@dwmt/commitlint-plugin-jira-type": "2.0.0",
+		"@dwmt/commitlint-config-numbered-type": "1.0.0",
+		"@dwmt/commitlint-plugin-numbered-type": "1.0.0",
 		"@jest/globals": "27.0.6",
 		"@types/convict": "6.1.1",
 		"@types/jest": "26.0.23",
