@@ -59,7 +59,6 @@ For more examples and recipes, please head over to [examples](examples#konvenien
   * **Computed Properties.** Define functions and getters on configuration classes just as you would do on any other class. For an example, please refer to [examples/src/recipes/03-computed](examples/src/recipes/03-computed/index.ts).
   * **Inheritance Support.** Configuration classes can extend each other, inheriting configurable properties.
   * **Env Var and File Key Derivation.** Environment variables and config file keys are automatically derived from class and property names. Of course, both the derivation method and the derived values can be overridden.
-  * **Inversify Support.** Konvenient comes with [inversify](https://inversify.io/) support baked in: if inversify is available, then konvenient decorates all configuration classes with `@injectable()`.
 
 ## License
 

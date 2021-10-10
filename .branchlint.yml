@@ -4,6 +4,6 @@ anyOf:
   with:
     allowed: [master]
     
-# ...or must contain a Jira ticket identifier followed by a kebab cased
+# ...or must contain an issue number followed by a kebab cased
 # ticket title.
-- uses: jira
+- uses: numbered

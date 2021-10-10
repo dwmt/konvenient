@@ -1,4 +1,5 @@
 import {Configuration, Configurable, configurator} from 'konvenient'
+import {injectable} from "inversify";
 
 configurator.withSources([`${__dirname}/${process.env['NODE_ENV']}.json`])
 
@@ -10,6 +11,7 @@ export enum Environments {
 @Configuration({
   pathPrefix: '',
 })
+@injectable()
 export class GlobalConfiguration {
   // File key: env
   // Env name: NODE_ENV
@@ -26,6 +28,7 @@ export class GlobalConfiguration {
 }
 
 @Configuration()
+@injectable()
 export class DatabaseConfiguration {
   // File key: database.connectionString
   // Env name: DATABASE_CONNECTION_STRING
@@ -37,6 +40,7 @@ export class DatabaseConfiguration {
 }
 
 @Configuration()
+@injectable()
 export class HttpConfiguration {
   // File key: http.port
   // Env name: PORT
