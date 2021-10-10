@@ -11,14 +11,14 @@
 </h3>
 
 <p align="center">
-  <a href="https://github.com/battila7/konvenient/blob/master/LICENSE">
-    <img src="https://img.shields.io/github/license/battila7/konvenient" alt="konvenient uses the MIT License.">
+  <a href="https://github.com/dwmt/konvenient/blob/master/LICENSE">
+    <img src="https://img.shields.io/github/license/dwmt/konvenient" alt="konvenient uses the MIT License.">
   </a>
   <a href="https://www.npmjs.com/package/konvenient">
     <img src="https://img.shields.io/npm/v/konvenient" alt="Current npm package version.">
   </a>
-  <a href="https://github.com/battila7/konvenient/actions/workflows/continuous-integration.yml">
-    <img src="https://github.com/battila7/konvenient/actions/workflows/continuous-integration.yml/badge.svg" alt="Continuous Integration status.">
+  <a href="https://github.com/dwmt/konvenient/actions/workflows/continuous-integration.yml">
+    <img src="https://github.com/dwmt/konvenient/actions/workflows/continuous-integration.yml/badge.svg" alt="Continuous Integration status.">
   </a>
 </p>
 

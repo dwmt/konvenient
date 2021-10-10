@@ -22,11 +22,11 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/battila7/konvenient.git"
+		"url": "git+https://github.com/dwmt/konvenient.git"
 	},
-	"homepage": "https://github.com/battila7/konvenient",
+	"homepage": "https://github.com/dwmt/konvenient",
 	"bugs": {
-		"url": "https://github.com/battila7/konvenient/issues"
+		"url": "https://github.com/dwmt/konvenient/issues"
 	},
 	"keywords": [
 		"typescript",
