@@ -15,6 +15,8 @@ export const optionsKey = Symbol('options')
 export const configurationSchema = Symbol('configurationSchema')
 export const loadedValues = Symbol('loadedValues')
 
+export const KONVENIENT_CONFIGURATION_CLASS = '__konvenient_configuration_class'
+
 export interface ConfigurationOptions {
   pathPrefix?: string
   envPrefix?: string
@@ -30,6 +32,7 @@ export interface FinalizedConfigurationOptions
 export interface DecoratedPrototype {
   [optionsKey]: FinalizedConfigurationOptions
   [configurationSchema]: ConfigurationSchema
+  [KONVENIENT_CONFIGURATION_CLASS]: boolean
 }
 
 export interface DecoratedConstructor {
@@ -118,6 +121,9 @@ export function Configuration(
 
     ;(newClass.prototype as DecoratedPrototype)[configurationSchema] =
       currentSchema
+    ;(newClass.prototype as DecoratedPrototype)[
+      KONVENIENT_CONFIGURATION_CLASS
+    ] = true
 
     return newClass as new () => T
   }
