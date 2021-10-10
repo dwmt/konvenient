@@ -2,6 +2,7 @@ import convict from 'convict'
 
 export {KonvenientConfigurator, configurator} from './configuration'
 export {
+  KONVENIENT_CONFIGURATION_CLASS,
   Configuration,
   Configurable,
   Nested,
