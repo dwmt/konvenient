@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import fastify from 'fastify'
 import {inject} from './inject'
 import {HttpConfiguration} from './config'

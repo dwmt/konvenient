@@ -1,6 +1,8 @@
 import {Configuration, Configurable} from 'konvenient'
+import {injectable} from "inversify";
 
 @Configuration()
+@injectable()
 export class HttpConfiguration {
   // File key: http.port
   // Env name: PORT

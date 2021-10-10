@@ -1,7 +1,7 @@
 import 'reflect-metadata'
-import {Container} from 'inversify'
 import {HttpConfiguration} from './config'
 import {HttpServer} from './server'
+import {Container} from "inversify";
 
 const container = new Container()
 

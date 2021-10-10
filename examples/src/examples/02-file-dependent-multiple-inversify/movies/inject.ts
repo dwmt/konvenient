@@ -1,4 +1,3 @@
-import {Container} from 'inversify'
 import {Controller, TYPE as ControllerType} from '../web/Controller'
 import {MongoMovieDatabase} from './persistence/MongoMovieDatabase'
 import {
@@ -6,6 +5,7 @@ import {
   TYPE as MovieDatabaseType,
 } from './persistence/MovieDatabase'
 import {MovieController} from './web/MovieController'
+import {Container} from "inversify";
 
 export function inject(container: Container) {
   container

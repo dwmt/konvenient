@@ -1,4 +1,4 @@
-import {RouteOptions} from 'fastify'
+import {RouteOptions} from "fastify";
 
 export interface Controller {
   routes(): RouteOptions[]

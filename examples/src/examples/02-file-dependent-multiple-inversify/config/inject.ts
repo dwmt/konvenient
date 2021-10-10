@@ -1,5 +1,5 @@
-import {Container} from 'inversify'
 import {DatabaseConfiguration, GlobalConfiguration, HttpConfiguration} from '.'
+import {Container} from "inversify";
 
 export function inject(container: Container) {
   container
