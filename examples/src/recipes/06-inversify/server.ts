@@ -1,5 +1,5 @@
-import {injectable} from 'inversify'
 import {HttpConfiguration} from './config'
+import {injectable} from "inversify";
 
 @injectable()
 export class HttpServer {
