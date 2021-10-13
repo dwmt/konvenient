@@ -3,6 +3,7 @@ import {
   Configuration as configuration,
   configurationSchema,
   DecoratedPrototype,
+  KONVENIENT_CONFIGURATION_CLASS,
   Nested as nested,
   nestedSchemaOf,
   optionsKey,
@@ -78,6 +79,7 @@ describe('nestedSchemaOf', () => {
         envPrefix: 'STORE',
       },
       [configurationSchema]: storesSchema,
+      [KONVENIENT_CONFIGURATION_CLASS]: true
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
