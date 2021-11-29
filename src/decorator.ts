@@ -119,6 +119,12 @@ export function Configuration(
       }
     }
 
+    // Restoring the original constructor name on the
+    // artificial, decorated class.
+    Object.defineProperty(newClass, 'name', {
+      value: constructor.name
+    })
+
     ;(newClass.prototype as DecoratedPrototype)[configurationSchema] =
       currentSchema
     ;(newClass.prototype as DecoratedPrototype)[
